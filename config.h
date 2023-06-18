@@ -1,0 +1,68 @@
+
+
+
+
+#define F_CPU        16000000    // Set clock frequency in Hertz
+// use date -u +%Y%m%d%H%M%S utc
+#define BUILD_DATE 20230611
+#define VERSION_MAJOR      0
+#define VERSION_MINOR      1
+#define VERSION_UPDATE     0
+
+// ADC
+
+// BUTTONS
+#define NUMBER_OF_BUTTONS       4
+#define BUTTONS_FIFO_SIZE      16
+
+// GPIO
+
+
+// LCD_44780
+//#define RS   GPIO_PIN_B1
+//#define EN   GPIO_PIN_B0
+//#define D7   GPIO_PIN_D7
+//#define D6   GPIO_PIN_D6
+//#define D5   GPIO_PIN_D5
+//#define D4   GPIO_PIN_D4
+
+
+// PWM
+
+// Serial
+#define SERIAL_RX_BUFFER_SIZE     64
+#define SERIAL_TX_BUFFER_SIZE     64
+
+
+// SoftSPI
+
+#define SOFTSPI_INTERFACES 4
+
+#define SOFTSPI_ENABLE_MODE_0_LSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_0_MSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_1_LSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_1_MSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_2_LSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_2_MSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_3_LSB_FIRST    1
+#define SOFTSPI_ENABLE_MODE_3_MSB_FIRST    1
+
+#define SOFTSPI_ENABLE_MODE_0_LSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_0_MSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_1_LSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_1_MSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_2_LSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_2_MSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_3_LSB_FIRST_SLOW    1
+#define SOFTSPI_ENABLE_MODE_3_MSB_FIRST_SLOW    1
+
+
+// SPI
+
+// Systick
+
+
+
+
+
+

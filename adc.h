@@ -1,0 +1,80 @@
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \file adc.h
+///
+///  \copy copyright (c) 2023, 2014 William R Cooke
+///
+///  @brief 
+///
+//////////////////////////////////////////////////////////////////////////////
+
+#ifndef SYSTICK_H
+#define SYSTICK_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+  #include <avr/interrupt.h>
+  #include <stdint.h>
+  
+
+
+  
+#include <stdint.h>
+// BDK #include "LPC11xx.h"
+
+#define ADC_VERSION_MAJOR     0
+#define ADC_VERSION_MINOR     1
+#define ADC_VERSION_BUILD     1
+#define ADC_VERSION_DATE      (20230608L)
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \b ADC_init
+///
+///  \brief
+///
+///  \param[in]  
+///  \param[in]  
+///  \param[in]  
+///
+//////////////////////////////////////////////////////////////////////////////
+
+void SYSTICK_Init(Prescale_t source, systick_timer_t *tim, uint8_t num);
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \b SYSTICK_set_callback
+///
+///  \brief sets callback of timer
+///
+///  \param[in]  index   timer number to set 0 to n-1
+///  \param[in   callback  pointer to callback function
+///
+//////////////////////////////////////////////////////////////////////////////
+void SYSTICK_set_callback(uint32_t index, callback_t callback);
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \b  ADC_handler
+///
+///  \brief ADC interrupt handler
+///
+/////////////////////////////////////////////////////////////////////////////
+// void ADC_handler(void) __attribute__((used,interrupt));
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
