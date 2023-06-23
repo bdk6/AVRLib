@@ -30,22 +30,22 @@ extern "C"
   // 
   typedef enum SOFTSPI_MODE
     {        //                                   cpol        cpha
-      SPI_MODE_0_MSB_FIRST              =  0, // idle low,  sample on rising
-      SPI_MODE_0_LSB_FIRST              =  1, // idle low,  sample on rising
-      SPI_MODE_1_MSB_FIRST              =  2, // idle low,  sample on falling
-      SPI_MODE_1_LSB_FIRST              =  3, // idle low,  sample on falling
-      SPI_MODE_2_MSB_FIRST              =  4, // idle high, sample on rising
-      SPI_MODE_2_LSB_FIRST              =  5, // idle high, sample on rising
-      SPI_MODE_3_MSB_FIRST              =  6, // idle high, sample on falling
-      SPI_MODE_3_LSB_FIRST              =  7, // idle high, sample on falling
-      SPI_MODE_0_MSB_FIRST_SLOW         =  8, // idle low,  sample on rising
-      SPI_MODE_0_LSB_FIRST_SLOW         =  9, // idle low,  sample on rising
-      SPI_MODE_1_MSB_FIRST_SLOW         = 10, // idle low,  sample on falling
-      SPI_MODE_1_LSB_FIRST_SLOW         = 11, // idle low,  sample on falling
-      SPI_MODE_2_MSB_FIRST_SLOW         = 12, // idle high, sample on rising
-      SPI_MODE_2_LSB_FIRST_SLOW         = 13, // idle high, sample on rising
-      SPI_MODE_3_MSB_FIRST_SLOW         = 14, // idle high, sample on falling
-      SPI_MODE_3_LSB_FIRST_SLOW         = 15, // idle high, sample on falling
+      SPI_MODE_0_MSB_FIRST              =  0, // idle low,  sample on leading
+      SPI_MODE_0_LSB_FIRST              =  1, // idle low,  sample on leading
+      SPI_MODE_1_MSB_FIRST              =  2, // idle low,  sample on trailing
+      SPI_MODE_1_LSB_FIRST              =  3, // idle low,  sample on trailing
+      SPI_MODE_2_MSB_FIRST              =  4, // idle high, sample on leading
+      SPI_MODE_2_LSB_FIRST              =  5, // idle high, sample on leading
+      SPI_MODE_3_MSB_FIRST              =  6, // idle high, sample on trailing
+      SPI_MODE_3_LSB_FIRST              =  7, // idle high, sample on trailing
+      SPI_MODE_0_MSB_FIRST_SLOW         =  8, // idle low,  sample on leading
+      SPI_MODE_0_LSB_FIRST_SLOW         =  9, // idle low,  sample on leading
+      SPI_MODE_1_MSB_FIRST_SLOW         = 10, // idle low,  sample on trailing
+      SPI_MODE_1_LSB_FIRST_SLOW         = 11, // idle low,  sample on trailing
+      SPI_MODE_2_MSB_FIRST_SLOW         = 12, // idle high, sample on leading
+      SPI_MODE_2_LSB_FIRST_SLOW         = 13, // idle high, sample on leading
+      SPI_MODE_3_MSB_FIRST_SLOW         = 14, // idle high, sample on trailing
+      SPI_MODE_3_LSB_FIRST_SLOW         = 15, // idle high, sample on trailing
 
     } softspi_mode_t;
   

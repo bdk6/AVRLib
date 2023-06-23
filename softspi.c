@@ -53,7 +53,7 @@ extern "C"
     sclk_pin = clk;
     GPIO_pin_mode(clk, GPIO_PIN_MODE_OUTPUT);
     mosi_pin = mosi;
-    if(mosi >= 0)
+    //   if(mosi >= 0)
       {
 	GPIO_pin_mode(mosi, GPIO_PIN_MODE_OUTPUT);
       }
@@ -150,10 +150,10 @@ extern "C"
     case SPI_MODE_0_MSB_FIRST:      // idle low, sample leading
         GPIO_write_pin(sclk_pin, 0);  // idle low
         GPIO_write_pin(ss, 0);
-        word <<= (sizeof(uint32_t) - bits);
+        word <<= (32 - bits);
         for(int b = 0; b < bits; b++)
         {
-          GPIO_write_pin(mosi_pin, word & 0x80000000);
+                GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
           GPIO_write_pin(sclk_pin, 1);
           GPIO_write_pin(sclk_pin, 0);
           word <<= 1;
@@ -168,7 +168,7 @@ extern "C"
         GPIO_write_pin(ss, 0);
         for(int b = 0; b < bits; b++)
           {
-	    GPIO_write_pin(mosi_pin, word & 0x01);
+                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
 	    GPIO_write_pin(sclk_pin, 1);
 	    GPIO_write_pin(sclk_pin, 0);
 	    word >>= 1;
@@ -181,11 +181,11 @@ extern "C"
     case SPI_MODE_1_MSB_FIRST:      // idle low, sample trailing
           GPIO_write_pin(sclk_pin, 0);  // idle low
           GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
+          word <<= (32 - bits);
           GPIO_write_pin(ss, 0);
           for(int b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+                  GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word <<= 1;
@@ -200,7 +200,7 @@ extern "C"
           GPIO_write_pin(ss, 0);
           for(uint8_t b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x01);
+                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word >>= 1;
@@ -212,12 +212,11 @@ extern "C"
     #ifdef SOFTSPI_ENABLE_MODE_2_MSB_FIRST
     case SPI_MODE_2_MSB_FIRST:      // idle high, sample leading
           GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
+          word <<= (32 - bits);
           GPIO_write_pin(ss, 0);
           for(uint8_t b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+                  GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word <<= 1;
@@ -232,7 +231,7 @@ extern "C"
           GPIO_write_pin(ss, 0);
           for(uint8_t b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x01);
+                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word >>= 1;
@@ -248,7 +247,7 @@ extern "C"
           word <<= (sizeof(uint32_t) - bits);
           for(uint8_t b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+                  GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word <<= 1;
@@ -263,7 +262,7 @@ extern "C"
           GPIO_write_pin(ss, 0);
           for(uint8_t b = 0; b < bits; b++)
           {
-            GPIO_write_pin(mosi_pin, word & 0x01);
+                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word >>= 1;
@@ -280,7 +279,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word <<= 1;
@@ -297,7 +296,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x01);
+            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word >>= 1;
@@ -315,7 +314,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word <<= 1;
@@ -332,7 +331,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x01);
+            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 1);
             GPIO_write_pin(sclk_pin, 0);
             word >>= 1;
@@ -350,7 +349,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word <<= 1;
@@ -367,7 +366,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x01);
+            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word >>= 1;
@@ -385,7 +384,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x80000000);
+            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word <<= 1;
@@ -402,7 +401,7 @@ extern "C"
           for(uint8_t b = 0; b < bits; b++)
           {
             _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, word & 0x01);
+            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
             GPIO_write_pin(sclk_pin, 0);
             GPIO_write_pin(sclk_pin, 1);
             word >>= 1;

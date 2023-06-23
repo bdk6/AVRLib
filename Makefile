@@ -78,11 +78,13 @@ CC             = avr-gcc
 # Override is only needed by avr-lib build system.
 
 override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
-override LDFLAGS       = -Wl,-Map,$(PRG).map
+override LDFLAGS       = -Wl,-Map,$(PRG).map -ffunction-sections -flto
 
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
+avrlib.a: systick.o gpio.o lcd_44780.o softspi.o
+	avr-ar r avrlib.a lcd_44780.o softspi.o systick.o gpio.o
 
 
 datefile.txt:
