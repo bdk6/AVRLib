@@ -17,7 +17,7 @@ extern "C"
 #include <avr/io.h>
   //#include <util/delay.h>
   
-#include "config.h"
+#include "avrlib_config.h"
   //  #include <util/delay.h>
   #include <util/delay_basic.h>
 #include "gpio.h"

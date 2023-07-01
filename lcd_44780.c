@@ -4,14 +4,12 @@
 ///  @brief Interfaces AVR to character LCDs using HD44780 or compatible
 //////////////////////////////////////////////////////////////////////////////
 
-//#define F_CPU 16000000
-#include "config.h"
+#include "device_config.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdint.h>
-//#include "config.h"
-#include "gpio.h"
 
+#include "gpio.h"
 #include "lcd_44780.h"
 
 

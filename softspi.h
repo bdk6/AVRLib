@@ -16,7 +16,7 @@ extern "C"
 {
 #endif
 
-#include "config.h"
+
 #include "gpio.h"
 
 #define SOFTSPI_VERSION_MAJOR     0

@@ -54,22 +54,6 @@ extern "C"
 #define SYSTICK_VERSION_BUILD     1
 #define SYSTICK_VERSION_DATE      (20230608L)
 
-  
-//////////////////////////////////////////////////////////////////////////////
-///
-/// System Timers that can be allocated
-///
-///////////////////////////////////////////////////////////////////////////// 
-
-
-typedef struct systick_timer
-{
-  uint32_t timeout_ticks;
-  uint32_t ticks_left;
-  callback_t callback;
-  uint8_t repeat;
-} systick_timer_t;
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -79,12 +63,10 @@ typedef struct systick_timer
 ///  \brief Initialize the systick timer and turn on interrupt
 ///
 ///  \param[in]  source    Clock source for timer.
-///  \param[in]  tim       Array of systick_timer_t strucs for user timers
-///  \param[in]  num       Number of timers in array
 ///
 //////////////////////////////////////////////////////////////////////////////
 
-void SYSTICK_Init(Prescale_t source, systick_timer_t *tim, uint8_t num);
+void SYSTICK_Init(Prescale_t source);
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -136,15 +118,13 @@ uint32_t SYSTICK_get_milliseconds(void);
 ///  \b SYSTICK_set_timer_ms
 ///
 ///  \brief sets a timer with number of milliseconds
-///  
-///  \param[in]  index  timer number 0 to n-1
+///
 ///  \param[in]  ms     number of milliseconds to run
 ///  \param[in]  repeat TODO whats this mean?
 ///  \param[in]  cb     Pointer to callback function (can be NULL.)
-///
+///  \return      Index of timer set, -1 if none available.
 //////////////////////////////////////////////////////////////////////////////
-void SYSTICK_set_timer_ms(uint32_t index, int32_t ms,
-			  uint8_t repeat, callback_t cb);
+int SYSTICK_set_timer_ms(int32_t ms, uint8_t repeat, callback_t cb);
 
 //////////////////////////////////////////////////////////////////////////////
 ///
@@ -152,13 +132,41 @@ void SYSTICK_set_timer_ms(uint32_t index, int32_t ms,
 ///
 ///  \brief sets a timer with number of milliseconds
 ///  
+///  \param[in]  ms     number of milliseconds to run
+///  \param[in]  repeat TODO whats this mean?
+///  \param[in]  cb     Pointer to callback function (can be NULL.)
+///  \return     Index of timer set, -1 if none available.
+//////////////////////////////////////////////////////////////////////////////
+int SYSTICK_set_timer_ticks(int32_t ticks, uint8_t repeat, callback_t cb);
+
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \b SYSTICK_modify_timer_ms
+///
+///  \brief modifies a timer with number of milliseconds
+///  
+///  \param[in]  idx    index of timer to modify
+///  \param[in]  ms     number of milliseconds to run
+///  \param[in]  repeat TODO whats this mean?
+///  \param[in]  cb     Pointer to callback function (can be NULL.)
+///
+//////////////////////////////////////////////////////////////////////////////
+void SYSTICK_modify_timer_ms(uint16_t index, int32_t ms,
+			  uint8_t repeat, callback_t cb);
+
+//////////////////////////////////////////////////////////////////////////////
+///
+///  \b SYSTICK_modify_timer_ticks
+///
+///  \brief modified a timer with number of milliseconds
+///  
 ///  \param[in]  index  timer number 0 to n-1
 ///  \param[in]  ms     number of milliseconds to run
 ///  \param[in]  repeat TODO whats this mean?
 ///  \param[in]  cb     Pointer to callback function (can be NULL.)
 ///
 //////////////////////////////////////////////////////////////////////////////
-void SYSTICK_set_timer_ticks(uint32_t index, int32_t ticks,
+void SYSTICK_modify_timer_ticks(uint16_t index, int32_t ticks,
 			     uint8_t repeat, callback_t cb);
   
 //////////////////////////////////////////////////////////////////////////////
@@ -171,7 +179,7 @@ void SYSTICK_set_timer_ticks(uint32_t index, int32_t ticks,
 ///  \return   Number of milliseconds remaining on timer
 ///
 //////////////////////////////////////////////////////////////////////////////
-uint32_t SYSTICK_get_ms_remaining(uint32_t index);
+uint32_t SYSTICK_get_ms_remaining(uint16_t index);
 
   //////////////////////////////////////////////////////////////////////////////
 ///
@@ -183,7 +191,7 @@ uint32_t SYSTICK_get_ms_remaining(uint32_t index);
 ///  \return   Number of ticks remaining on timer
 ///
 //////////////////////////////////////////////////////////////////////////////
-uint32_t SYSTICK_get_ticks_remaining(uint32_t index);
+uint32_t SYSTICK_get_ticks_remaining(uint16_t index);
 
 //////////////////////////////////////////////////////////////////////////////
 ///
@@ -195,7 +203,7 @@ uint32_t SYSTICK_get_ticks_remaining(uint32_t index);
 ///  \param[in   callback  pointer to callback function
 ///
 //////////////////////////////////////////////////////////////////////////////
-void SYSTICK_set_callback(uint32_t index, callback_t callback);
+void SYSTICK_set_callback(uint16_t index, callback_t callback);
 
 //////////////////////////////////////////////////////////////////////////////
 ///

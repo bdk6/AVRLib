@@ -39,7 +39,9 @@ typedef enum GPIO_Pin
     GPIO_PIN_D4         = 28,
     GPIO_PIN_D5         = 29,
     GPIO_PIN_D6         = 30,
-    GPIO_PIN_D7         = 31
+    GPIO_PIN_D7         = 31,
+    
+    GPIO_PIN_NONE       = 255
   } GPIO_Pin_t;
 
 //////////////////////////////////////////////////////////////////////////////
