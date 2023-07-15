@@ -15,15 +15,22 @@ extern "C"
 #include "encoder.h"
 
 
-static const uint8_t pins = { ENCODER_PINS };
-static const uint8_t NUMBER_ENCODER_PINS = (sizeof(pins) / sizeof(pins[0]));
-static const uint8_t NUMBER_ENCODERS = NUMBER_ENCODER_PINS / 2;
+static const uint8_t pins[] = { ENCODER_PINS };
+//static const uint8_t NUMBER_ENCODER_PINS = (sizeof(pins) / sizeof(pins[0]));
+//static const uint8_t NUMBER_ENCODERS = (sizeof(pins) / sizeof(pins[0]) / 2 );
 
+#define NUMBER_ENCODER_PINS (sizeof(pins) / sizeof(pins[0]))
+#define NUMBER_ENCODERS (NUMBER_ENCODER_PINS / 2)
+        
 // Keep track of the current count and last time position changed.
 static int32_t counts[NUMBER_ENCODERS];
         static uint32_t last_read[NUMBER_ENCODERS];
         static uint32_t last_change[NUMBER_ENCODERS];
-static const int8_t transitions[][] =
+
+        static void encoder_callback(void);
+
+        
+static const int8_t transitions[4][4] =
 {
         {0, 1, -1, 0},
         {-1, 0, 0, 1},
@@ -70,13 +77,18 @@ void ENCODER_init(void)
         {
                 GPIO_pin_mode(pins[i], GPIO_PIN_MODE_INPUT_PULLUP);
         }
+        int callbackTimer = SYSTICK_set_timer_ms(1, 0, encoder_callback);
         
 }
         
 int32_t ENCODER_get_count(int idx);
-void ENCODER_set_count(int idx, int32_T count);
+void ENCODER_set_count(int idx, int32_t count);
 
-
+        static void encoder_callback(void)
+        {
+                // do callback
+        }
+        
 
 #ifdef __cplusplus
 }

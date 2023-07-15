@@ -86,18 +86,15 @@ OBJDUMP        = avr-objdump
 avrlib.a: systick.o gpio.o lcd_44780.o softspi.o
 	avr-ar r avrlib.a lcd_44780.o softspi.o systick.o gpio.o
 
+devicelib.a:	button.o keypad.o lcd_44780.o encoder.o
+	avr-ar r devicelib.a button.o keypad.o lcd_44780.o encoder.o
 
-datefile.txt:
-	date -u +%Y%m%d%H%M%S >datefile.txt
 
 avrlib.elf:  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o $(LDFLAGS) $(LIBS)
 
 avrlib_test.o:	avrlib_test.c
 	$(CC) $(CFLAGS) -c avrlib_test.c
-
-lcd_44780.o:	lcd_44780.c lcd_44780.h
-	$(CC) $(CFLAGS) -c lcd_44780.c
 
 gpio.o:	gpio.c gpio.h
 	$(CC) $(CFLAGS) -c gpio.c
@@ -107,6 +104,26 @@ systick.o:	systick.c systick.h
 
 softspi.o:	softspi.c softspi.h
 	$(CC) $(CFLAGS) -c softspi.c
+
+button.o:	button.c button.h device_config.h
+	$(CC) $(CFLAGS) -c button.c
+
+encoder.o:	encoder.c encoder.h device_config.h
+	$(CC) $(CFLAGS) -c encoder.c
+
+keypad.o:	keypad.c keypad.h device_config.h
+	$(CC) $(CFLAGS) -c keypad.c
+
+lcd_44780.o:	lcd_44780.c lcd_44780.h device_config.h
+	$(CC) $(CFLAGS) -c lcd_44780.c
+
+
+
+datefile.txt:
+	date -u +%Y%m%d%H%M%S >datefile.txt
+
+
+
 
 avrlib.hex: avrlib.elf
 	avr-objcopy -j .text -j .data -O ihex avrlib.elf  avrlib.hex

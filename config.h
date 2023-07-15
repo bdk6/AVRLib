@@ -12,20 +12,10 @@
 // ADC
 
 // BUTTONS
-#define NUMBER_OF_BUTTONS       4
-#define BUTTONS_FIFO_SIZE      16
+//#define NUMBER_OF_BUTTONS       4
+//#define BUTTONS_FIFO_SIZE      16
 
 // GPIO
-
-
-// LCD_44780
-//#define RS   GPIO_PIN_B1
-//#define EN   GPIO_PIN_B0
-//#define D7   GPIO_PIN_D7
-//#define D6   GPIO_PIN_D6
-//#define D5   GPIO_PIN_D5
-//#define D4   GPIO_PIN_D4
-
 
 // PWM
 

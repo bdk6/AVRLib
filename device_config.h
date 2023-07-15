@@ -20,9 +20,9 @@
 //                        A            B            A            B
 #define ENCODER_PINS  GPIO_PIN_D3, GPIO_PIN_D4, GPIO_PIN_D5, GPIO_PIN_D6
 // How many counts to change for slow, medium, fast revolution
-#define ENCODER_INC_LOW  5, 100
-#define ENCODER_INC_MED  50, 10000
-#define ENCODER_INC_HIGH 500, 100000
+#define ENCODER_INC_LOW  1
+#define ENCODER_INC_MED  100
+#define ENCODER_INC_HIGH  100000
 // Ticks to change from slow to medium resolution
 #define ENCODER_TICKS_LOW_MED   10
 // Ticks to change from medium to fast resolution
@@ -34,6 +34,8 @@
 // of pin names for each.
 // BUFFER_SIZE is the number of bytes for the FIFO buffer of key  presses
 // STABLE_COUNT is how many scans the press must be stable to be valid
+#define KEYPAD_NUMBER_ROWS        4
+#define KEYPAD_NUMBER_COLS        4
 #define KEYPAD_ROW_PINS  GPIO_PIN_B3, GPIO_PIN_B4, GPIO_PIN_B5, GPIO_PIN_B6
 #define KEYPAD_COL_PINS  GPIO_PIN_C0, GPIO_PIN_C3, GPIO_PIN_C4
 #define KEYPAD_BUFFER_SIZE        4
@@ -43,11 +45,13 @@
 // LCD_44780
 // Define the pins for LCD using GPIO pin names
 
-//#define RS   GPIO_PIN_B1
-//#define EN   GPIO_PIN_B0
-//#define D7   GPIO_PIN_D7
-//#define D6   GPIO_PIN_D6
-//#define D5   GPIO_PIN_D5
-//#define D4   GPIO_PIN_D4
+//#define LCD_44780_RS   GPIO_PIN_B1
+//#define LCD_44780_EN   GPIO_PIN_B0
+//#define LCD_44780_D7   GPIO_PIN_D7
+//#define LCD_44780_D6   GPIO_PIN_D6
+//#define LCD_44780_D5   GPIO_PIN_D5
+//#define LCD_44780_D4   GPIO_PIN_D4
+#define LCD_44780_NUMBER_COLUMS       16
+#define LCD_44780_NUMBER_ROWS          2
 
 #endif 
