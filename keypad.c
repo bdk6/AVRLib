@@ -75,7 +75,7 @@ void KEYPAD_init(void)
       keys[r][c].pressed = 0;
     }
   }
-  int callback_timer = SYSTICK_set_timer_ms(5, 0, scan_callback);
+  SYSTICK_set_timer_ms(5, 0, scan_callback);
 }
 
 //////////////////////////////////////////////////////////////////////////////

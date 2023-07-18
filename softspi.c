@@ -11,24 +11,26 @@
 #ifdef __cplusplus
 extern "C"
 {
+}
+
 #endif
+#warning Remove extra brace from extern "C" in softspi.c line 14
 
 #include <stdint.h>
+#include "config.h"
 #include <avr/io.h>
-  //#include <util/delay.h>
   
-#include "avrlib_config.h"
-  //  #include <util/delay.h>
-  #include <util/delay_basic.h>
+//#include "avrlib_config.h"
+#include <util/delay_basic.h>
 #include "gpio.h"
 #include "softspi.h"
   
 
-  static uint8_t sclk_pin;
-  static int8_t mosi_pin;
-  static int8_t miso_pin;
+static uint8_t sclk_pin;
+static int8_t mosi_pin;
+static int8_t miso_pin;
   
-  typedef struct softspi
+typedef struct softspi
 {
   uint32_t        bits_per_second;  // Max speed in bps, 0 fast as possible.
   int8_t          ss_pin;    // Slave Select Pin, -1 if not used
@@ -37,7 +39,9 @@ extern "C"
   uint8_t         bits;      // How many bits to transfer per cycle
 } softspi_t;
 
-  static softspi_t spis[ SOFTSPI_INTERFACES];
+//  static softspi_t spis[ SOFTSPI_INTERFACES];
+static softspi_t spis[] = { SOFTSPI_INTERFACES };
+#define NUMBER_INTERFACES  ( sizeof(spis) / sizeof(spis[0]) )
 
 //////////////////////////////////////////////////////////////////////////////
 /// @function SOFTSPI_init
@@ -47,56 +51,50 @@ extern "C"
 /// @param[in] miso  GPIO pin for MISO (-1 if not used)
 /// @return  nonzero on error
 /////////////////////////////////////////////////////////////////////////////
-  int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso)
+int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso)
+{
+  int rtn = 0;
+  sclk_pin = clk;
+  GPIO_pin_mode(clk, GPIO_PIN_MODE_OUTPUT);
+  mosi_pin = mosi;
+  //   if(mosi >= 0)
   {
-    int rtn = 0;
-    sclk_pin = clk;
-    GPIO_pin_mode(clk, GPIO_PIN_MODE_OUTPUT);
-    mosi_pin = mosi;
-    //   if(mosi >= 0)
-      {
-	GPIO_pin_mode(mosi, GPIO_PIN_MODE_OUTPUT);
-      }
-    miso_pin = miso;
-    if(miso >= 0)
-      {
-	GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
-      }
-
-    return rtn;
+    GPIO_pin_mode(mosi, GPIO_PIN_MODE_OUTPUT);
   }
-  
-    
-
-  ////////////////////////////////////////////////////////////////////////////
-  /// @fn SOFTSPI_set_interface
-  /// @brief Set up a softspi parameters
-  /// @param[in] idx   SoftSPI index 0 to # buttons - 1
-  /// @param[in] ss    GPIO pin for slave select, -1 if not used
-  /// @param[in] bits  Number of bits per transfer
-  /// @param[in] mode  SPI mode to set clock phase and polarity
-  /// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
-  /// @return    Zero on success or error code.
-  ////////////////////////////////////////////////////////////////////////////
-  int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
-			    softspi_mode_t mode, uint32_t bps)
+  miso_pin = miso;
+  if(miso >= 0)
   {
-    int rtn = 0;
-    if(idx < SOFTSPI_INTERFACES)
-      {
-	spis[idx].ss_pin = ss;
-	GPIO_write_pin(ss, 1);   // initialize deselected
-	GPIO_pin_mode(ss, GPIO_PIN_MODE_OUTPUT);
-	spis[idx].bits_per_second = bps;
-	spis[idx].mode = mode;
-	spis[idx].bits = bits;
-        spis[idx].delay_ticks = 0;   // For now.  May change if bps is requested.
-      }
-    else
-      {
-	rtn = -1;
-      }
+    GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
+  }
 
+  return rtn;
+}
+  
+int SOFTSPI_init2(void)
+{
+  int rtn = 0;
+  sclk_pin = SOFTSPI_CLK;
+  GPIO_pin_mode(SOFTSPI_CLK, GPIO_PIN_MODE_OUTPUT);
+  mosi_pin = SOFTSPI_MOSI;
+  if (mosi_pin != GPIO_PIN_NONE)
+  {
+    GPIO_pin_mode(SOFTSPI_MOSI, GPIO_PIN_MODE_OUTPUT);
+  }
+  miso_pin = SOFTSPI_MISO;
+  if (SOFTSPI_MISO != GPIO_PIN_NONE)
+  {
+    GPIO_pin_mode(SOFTSPI_MISO, GPIO_PIN_MODE_INPUT_PULLUP);
+  }
+  // TODO calc delay ticks from bit rate
+  #warning Need to add code to calculate delay ticks to softspi.c
+  for(int idx = 0; idx < NUMBER_INTERFACES; idx++)
+  {
+          // deselect each device
+          if(spis[idx].ss_pin != GPIO_PIN_NONE)
+          {
+                  GPIO_pin_mode(spis[idx].ss_pin, GPIO_PIN_MODE_OUTPUT);
+                  GPIO_write_pin(spis[idx].ss_pin, 1);
+          }
     // The a slow speed is requested, it is handled with _delay_us().
     // The max speed without any intentional slowing is somewhere
     // around 1 Mbs;  each bit takes approximately 1000 nS to send.  If
@@ -109,22 +107,80 @@ extern "C"
     // This is not very accurate,but we try to err on the side
     // of caution.
 
+    uint32_t bps = spis[idx].bits_per_second;
     if(bps != 0 )
+    {
+      uint32_t ns = 1000000000L / bps;  // nS between bits
+      ns -= 1000;  // Account for overhead time.
+      uint32_t ns_per_tick = 1000000000L / F_CPU * 3; // per docs, 3 clk / tick.
+      uint32_t ticks = ns / ns_per_tick;
+      if(ticks > 255)
       {
-        uint32_t ns = 1000000000L / bps;  // nS between bits
-        ns -= 1000;  // Account for overhead time.
-        uint32_t ns_per_tick = 1000000000L / F_CPU * 3; // per docs, 3 clk / tick.
-        uint32_t ticks = ns / ns_per_tick;
-        if(ticks > 255)
-          {
-            ticks = 0;  // Corresponds to 256 ticks, the max
-          }
-        spis[idx].delay_ticks = (uint8_t) ticks;
+        ticks = 0;  // Corresponds to 256 ticks, the max
       }
-        
-    
-    return rtn;
+      spis[idx].delay_ticks = (uint8_t) ticks;
+    }
   }
+  return rtn;
+}
+        
+
+////////////////////////////////////////////////////////////////////////////
+/// @fn SOFTSPI_set_interface
+/// @brief Set up a softspi parameters
+/// @param[in] idx   SoftSPI index 0 to # buttons - 1
+/// @param[in] ss    GPIO pin for slave select, -1 if not used
+/// @param[in] bits  Number of bits per transfer
+/// @param[in] mode  SPI mode to set clock phase and polarity
+/// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
+/// @return    Zero on success or error code.
+////////////////////////////////////////////////////////////////////////////
+int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
+                          softspi_mode_t mode, uint32_t bps)
+{
+  int rtn = 0;
+  if(idx < NUMBER_INTERFACES)
+  {
+    spis[idx].ss_pin = ss;
+    GPIO_write_pin(ss, 1);   // initialize deselected
+    GPIO_pin_mode(ss, GPIO_PIN_MODE_OUTPUT);
+    spis[idx].bits_per_second = bps;
+    spis[idx].mode = mode;
+    spis[idx].bits = bits;
+    spis[idx].delay_ticks = 0;   // For now.  May change if bps is requested.
+  }
+  else
+  {
+    rtn = -1;
+  }
+
+  // The a slow speed is requested, it is handled with _delay_us().
+  // The max speed without any intentional slowing is somewhere
+  // around 1 Mbs;  each bit takes approximately 1000 nS to send.  If
+  // a specific max bit rate is requested, we calculate the time
+  // per bit and use that for a delay loop.  Subtracting
+  // the always-present 1000 nS overhead, we use the result as the
+  // delay time.
+  //
+  // CAUTION!
+  // This is not very accurate,but we try to err on the side
+  // of caution.
+
+  if(bps != 0 )
+  {
+    uint32_t ns = 1000000000L / bps;  // nS between bits
+    ns -= 1000;  // Account for overhead time.
+    uint32_t ns_per_tick = 1000000000L / F_CPU * 3; // per docs, 3 clk / tick.
+    uint32_t ticks = ns / ns_per_tick;
+    if(ticks > 255)
+    {
+      ticks = 0;  // Corresponds to 256 ticks, the max
+    }
+    spis[idx].delay_ticks = (uint8_t) ticks;
+  }
+
+  return rtn;
+}
   
     
   

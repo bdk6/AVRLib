@@ -14,7 +14,10 @@
 #ifdef __cplusplus
 extern "C"
 {
+}
 #endif
+
+#warning Remove extra brace from extern "C" in systick.h line 17
 
   #include <avr/interrupt.h>
   #include <stdint.h>
@@ -24,7 +27,9 @@ extern "C"
   // TODO
   // STuff to go in some other config file
 
-  typedef void (*callback_t)(void);
+//  typedef void (*callback_t)(void);
+typedef void ( *callback_t) (void);
+
 
   typedef enum Prescale
     {

@@ -10,10 +10,16 @@
 #include <avr/interrupt.h>
 #include <stdint.h>
 #include <stddef.h>   // for NULL
+
 //#include "LPC11xx.h"
 //#include "system_LPC11xx.h"
+
+
+#include "config.h"
 #include <avr/io.h>
-#include "avrlib_config.h"
+
+//#include "avrlib_config.h"
+
 #include "systick.h"
 
 
@@ -41,6 +47,7 @@ typedef struct systick_timer
 } systick_timer_t;
 
 static volatile systick_timer_t timers[SYSTICK_COUNT];
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -209,7 +216,7 @@ int SYSTICK_set_timer_ms(int32_t ms, uint8_t repeat, callback_t cb)
   {
     uint8_t tmp = TIMSK;
     TIMSK &= ~(0x01);  // disable interrupt
-    timers[idx].timeout_ticks = (uint32_t)(ms / ms_per_tick);
+    timers[idx].timeout_ticks = (uint32_t)(ms / ms_per_tick + 0.5);
     timers[idx].ticks_left = timers[idx].timeout_ticks;
     timers[idx].repeat = repeat;
     timers[idx].callback = cb;
@@ -427,7 +434,7 @@ ISR(TIMER0_OVF_vect)
 	   timers[index].ticks_left--;
 	   if(timers[index].ticks_left == 0)
 	     {
-	       if(timers[index].repeat != 0)
+	       if(timers[index].repeat == 0)
 		 {
 		   timers[index].ticks_left = timers[index].timeout_ticks;
 		 }

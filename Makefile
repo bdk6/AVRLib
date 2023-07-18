@@ -83,11 +83,11 @@ override LDFLAGS       = -Wl,-Map,$(PRG).map -ffunction-sections -flto
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
-avrlib.a: systick.o gpio.o lcd_44780.o softspi.o
-	avr-ar r avrlib.a lcd_44780.o softspi.o systick.o gpio.o
+avrlib.a: systick.o gpio.o  softspi.o
+	avr-ar r avrlib.a softspi.o systick.o gpio.o
 
-devicelib.a:	button.o keypad.o lcd_44780.o encoder.o
-	avr-ar r devicelib.a button.o keypad.o lcd_44780.o encoder.o
+devicelib.a:	button.o keypad.o lcd_44780.o encoder.o dds_9833.o
+	avr-ar r devicelib.a button.o keypad.o lcd_44780.o encoder.o dds_9833.o
 
 
 avrlib.elf:  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o
@@ -99,14 +99,18 @@ avrlib_test.o:	avrlib_test.c
 gpio.o:	gpio.c gpio.h
 	$(CC) $(CFLAGS) -c gpio.c
 
-systick.o:	systick.c systick.h
+softspi.o:	softspi.c softspi.h config.h
+	$(CC) $(CFLAGS) -c softspi.c
+
+systick.o:	systick.c systick.h config.h
 	$(CC) $(CFLAGS) -c systick.c
 
-softspi.o:	softspi.c softspi.h
-	$(CC) $(CFLAGS) -c softspi.c
 
 button.o:	button.c button.h device_config.h
 	$(CC) $(CFLAGS) -c button.c
+
+dds_9833.o:	dds_9833.c dds_9833.h device_config.h
+	$(CC) $(CFLAGS) -c dds_9833.c
 
 encoder.o:	encoder.c encoder.h device_config.h
 	$(CC) $(CFLAGS) -c encoder.c
@@ -114,7 +118,7 @@ encoder.o:	encoder.c encoder.h device_config.h
 keypad.o:	keypad.c keypad.h device_config.h
 	$(CC) $(CFLAGS) -c keypad.c
 
-lcd_44780.o:	lcd_44780.c lcd_44780.h device_config.h
+lcd_44780.o:	lcd_44780.c lcd_44780.h device_config.h config.h
 	$(CC) $(CFLAGS) -c lcd_44780.c
 
 
@@ -135,7 +139,7 @@ fuse:
 	avrdude -cavrisp  -pm8 -P/dev/ttyUSB0 -b19200 -U lfuse:w:0xef:m -U hfuse:w:0xd9:m 
 
 clean:
-	rm -rf *.o $(PRG).elf *.eps *.png *.pdf *.bak 
+	rm -rf *.o $(PRG).elf *.eps *.png *.pdf *.bak *.a
 	rm -rf *.lst *.map $(EXTRA_CLEAN_FILES)
 ################################################################################
 # this will create an ELF file!

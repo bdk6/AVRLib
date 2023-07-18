@@ -54,7 +54,7 @@ static void insert(uint8_t b)
 {
   if ((tail + 1) % BUTTON_BUFFER_SIZE != head)
   {
-     tail = (tail + 1) % KEYPAD_BUFFER_SIZE;
+     tail = (tail + 1) % BUTTON_BUFFER_SIZE;
      buffer[tail] = b;
   }
 }
@@ -86,6 +86,7 @@ void BUTTON_init(void)
 {
   for(int i = 0; i < NUMBER_BUTTONS; i++)
   {
+          GPIO_pin_mode(button_pins[i], GPIO_PIN_MODE_INPUT_PULLUP);
     buttons[i].active = 0;
     buttons[i].count =  0;
   }
