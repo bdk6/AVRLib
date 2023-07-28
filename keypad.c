@@ -42,8 +42,8 @@ static void insert(uint8_t k)
 {
   if( (tail + 1) % KEYPAD_BUFFER_SIZE != head)
   {
-    tail = (tail + 1) % KEYPAD_BUFFER_SIZE;
     buffer[tail] = k;
+    tail = (tail + 1) % KEYPAD_BUFFER_SIZE;
   }
 }
 
@@ -75,6 +75,7 @@ void KEYPAD_init(void)
       keys[r][c].pressed = 0;
     }
   }
+  for(int i = 0; i < KEYPAD_BUFFER_SIZE; i++) buffer[i] = 9;
   SYSTICK_set_timer_ms(5, 0, scan_callback);
 }
 
@@ -101,12 +102,14 @@ uint8_t KEYPAD_waiting(void)
 int KEYPAD_get_key(void)
 {
   int rtn = -1;
+  cli();
   if(tail != head)
   {
     rtn = buffer[head];
     head = (head + 1) % KEYPAD_BUFFER_SIZE;
   }
-  return rtn;
+  sei();
+  return  rtn;
 }
 
 
@@ -136,12 +139,12 @@ int KEYPAD_press_count(uint8_t row, uint8_t col);
 static void scan_callback(void)
 {
   // scan
+  for(uint8_t r = 0; r < KEYPAD_NUMBER_ROWS; r++) GPIO_write_pin(rows[r],1);
   for(uint8_t r = 0; r < KEYPAD_NUMBER_ROWS; r++)
   {
     GPIO_write_pin(rows[r], 0);
     for(uint8_t c = 0; c < KEYPAD_NUMBER_COLS; c++)
     {
-      // something
       uint8_t val = GPIO_read_pin(cols[c]);
       if(val == 0)
       {
@@ -171,8 +174,8 @@ static void scan_callback(void)
         }
         keys[r][c].pressed = 0;
       }
-                                
     }
+    GPIO_write_pin(rows[r], 1);
   }
 }
         
