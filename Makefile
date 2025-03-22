@@ -3,8 +3,8 @@
 # WRC 20220701
 
 # Set project name and output file here
-PRG            = avrlib
-OBJ            = avrlib.o
+PRG            = libavr
+OBJ            = libavr.o
 
 # Uncomment appropriate processor target
 #MCU_TARGET     = at90s2313
@@ -83,18 +83,18 @@ override LDFLAGS       = -Wl,-Map,$(PRG).map -ffunction-sections -flto
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
-avrlib.a: systick.o gpio.o  softspi.o
+libavr.a: systick.o gpio.o  softspi.o
 	avr-ar r avrlib.a softspi.o systick.o gpio.o
 
-devicelib.a:	button.o keypad.o lcd_44780.o encoder.o dds_9833.o
-	avr-ar r devicelib.a button.o keypad.o lcd_44780.o encoder.o dds_9833.o
+libdevice.a:	button.o keypad.o lcd_44780.o encoder.o dds_9833.o
+	avr-ar r libdevice.a button.o keypad.o lcd_44780.o encoder.o dds_9833.o
 
 
-avrlib.elf:  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o $(LDFLAGS) $(LIBS)
+libavr.elf:  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o $(LDFLAGS) $(LIBS)
 
-avrlib_test.o:	avrlib_test.c
-	$(CC) $(CFLAGS) -c avrlib_test.c
+libavr_test.o:	libavr_test.c
+	$(CC) $(CFLAGS) -c libavr_test.c
 
 gpio.o:	gpio.c gpio.h
 	$(CC) $(CFLAGS) -c gpio.c
@@ -129,11 +129,11 @@ datefile.txt:
 
 
 
-avrlib.hex: avrlib.elf
-	avr-objcopy -j .text -j .data -O ihex avrlib.elf  avrlib.hex
+libavr.hex: libavr.elf
+	avr-objcopy -j .text -j .data -O ihex libavr.elf  libavr.hex
 
 avrlib.flash:	avrlib.hex
-	avrdude -cavrisp -v -pm8 -P/dev/ttyUSB0 -b19200 -Uflash:w:avrlib.hex:i
+	avrdude -cavrisp -v -pm8 -P/dev/ttyUSB0 -b19200 -Uflash:w:libavr.hex:i
 
 fuse:
 	avrdude -cavrisp  -pm8 -P/dev/ttyUSB0 -b19200 -U lfuse:w:0xef:m -U hfuse:w:0xd9:m 
