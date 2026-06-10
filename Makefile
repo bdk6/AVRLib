@@ -91,20 +91,23 @@ datefile.txt:
 avrlib.elf:  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  avrlib_test.o systick.o gpio.o lcd_44780.o softspi.o $(LDFLAGS) $(LIBS)
 
-avrlib_test.o:	avrlib_test.c
+avrlib_test.o:	config.h avrlib_test.c
 	$(CC) $(CFLAGS) -c avrlib_test.c
 
-lcd_44780.o:	lcd_44780.c lcd_44780.h
+lcd_44780.o:	config.h lcd_44780.c lcd_44780.h
 	$(CC) $(CFLAGS) -c lcd_44780.c
 
-gpio.o:	gpio.c gpio.h
+gpio.o:	config.h gpio.c gpio.h
 	$(CC) $(CFLAGS) -c gpio.c
 
-systick.o:	systick.c systick.h
+systick.o:	config.h systick.c systick.h
 	$(CC) $(CFLAGS) -c systick.c
 
-softspi.o:	softspi.c softspi.h
+softspi.o:	config.h softspi.c softspi.h
 	$(CC) $(CFLAGS) -c softspi.c
+
+config.h:
+	cp ../config.h .
 
 avrlib.hex: avrlib.elf
 	avr-objcopy -j .text -j .data -O ihex avrlib.elf  avrlib.hex
@@ -186,38 +189,20 @@ esrec: $(PRG)_eeprom.srec
 # Every thing below here is used by avr-libc's build system and can be ignored
 # by the casual user.
 
-FIG2DEV                 = fig2dev
-EXTRA_CLEAN_FILES       = *.hex *.bin *.srec
 
-dox: eps png pdf
-
-eps: $(PRG).eps
-png: $(PRG).png
-pdf: $(PRG).pdf
-
-%.eps: %.fig
-	$(FIG2DEV) -L eps $< $@
-
-%.pdf: %.fig
-	$(FIG2DEV) -L pdf $< $@
-
-%.png: %.fig
-	$(FIG2DEV) -L png $< $@
-
-
-flash_write:    $(PRG).hex
+#flash_write:    $(PRG).hex
 #                avrdude -cstk500v1 -v -patmega8 -P/dev/ttyUSB0 -b19200 -Uflash:w:$(PRG).hex:i
 
 #flash:		$(PRG).hex
 #		avrdude -cavrisp -v -pm8 -P/dev/ttyUSB0 -b19200 -Uflash:w:$(PRG).hex:i
 
 
-lchex:
-	avr-objcopy -j .text -j .data -O ihex lcbdk lcbdk.hex
+#lchex:
+#	avr-objcopy -j .text -j .data -O ihex lcbdk lcbdk.hex
 
-lcflash:
-	avrdude -cavrisp -v -pm8 -P/dev/ttyUSB0 -b19200 -Uflash:w:lcbdk.hex:i
+#lcflash:
+#	avrdude -cavrisp -v -pm8 -P/dev/ttyUSB0 -b19200 -Uflash:w:lcbdk.hex:i
 
-lcfuse:
-	avrdude -cavrisp  -pm8 -P/dev/ttyUSB0 -b19200 -U lfuse:w:0xef:m -U hfuse:w:0xd9:m 
+#lcfuse:
+#	avrdude -cavrisp  -pm8 -P/dev/ttyUSB0 -b19200 -U lfuse:w:0xef:m -U hfuse:w:0xd9:m 
 

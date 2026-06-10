@@ -70,7 +70,7 @@ extern "C"
 
   ////////////////////////////////////////////////////////////////////////////
   /// @fn SOFTSPI_set_interface
-  /// @brief Set up a softspi parameters
+  /// @brief Set up a softspi's parameters
   /// @param[in] idx   SoftSPI index 0 to # buttons - 1
   /// @param[in] ss    GPIO pin for slave select, -1 if not used
   /// @param[in] bits  Number of bits per transfer
