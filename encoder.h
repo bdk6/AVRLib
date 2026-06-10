@@ -14,7 +14,7 @@
 
 void ENCODER_init(void);
 int32_t ENCODER_get_count(int idx);
-void ENCODER_set_count(int idx, int32_T count);
+void ENCODER_set_count(int idx, int32_t count);
 
 
 #endif   // ENCODER_H

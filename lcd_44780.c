@@ -6,6 +6,7 @@
 
 //#define F_CPU 16000000
 #include "config.h"
+#include "device_config.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -22,17 +23,17 @@
 
 #define DELAY_1     10
 
-static uint8_t columns = 8;
-static uint8_t rows = 1;
+//static uint8_t columns = 8;
+//static uint8_t rows = 1;
 
 //#ifndef RS
 //#warn Need to define these
-static uint8_t RS;         // Register select pin
-static uint8_t EN;         // Enable pin
-static uint8_t D7;         // D7 pin
-static uint8_t D6;         // D6 pin
-static uint8_t D5;         // D5 pin
-static uint8_t D4;         // D4 pin
+//static uint8_t RS;         // Register select pin
+//static uint8_t EN;         // Enable pin
+//static uint8_t D7;         // D7 pin
+//static uint8_t D6;         // D6 pin
+//static uint8_t D5;         // D5 pin
+//static uint8_t D4;         // D4 pin
 //#endif
 
 
@@ -42,25 +43,25 @@ static uint8_t D4;         // D4 pin
 
 static void RS_set(int rs)
 {
-  GPIO_write_pin(RS, rs);
+  GPIO_write_pin(LCD_44780_RS, rs);
 }
 
-static void E_set(int e) // pb5
-{
-  GPIO_write_pin(EN, e);
-}
+//static void E_set(int e) // pb5
+//{
+//  GPIO_write_pin(LCD_44780_EN, e);
+//}
 
 
-static void wait(void)
-{
-}
+//static void wait(void)
+//{
+//}
 
 static void write_nibble(uint8_t nib)
 {
-  GPIO_write_pin(D7, nib & 0x08);
-  GPIO_write_pin(D6, nib & 0x04);
-  GPIO_write_pin(D5, nib & 0x02);
-  GPIO_write_pin(D4, nib & 0x01);
+  GPIO_write_pin(LCD_44780_D7, nib & 0x08);
+  GPIO_write_pin(LCD_44780_D6, nib & 0x04);
+  GPIO_write_pin(LCD_44780_D5, nib & 0x02);
+  GPIO_write_pin(LCD_44780_D4, nib & 0x01);
   
   //nib &= 0x0f;  // Use only low four bits
   //uint8_t tmp = PORTB;
@@ -69,10 +70,10 @@ static void write_nibble(uint8_t nib)
   //PORTB = tmp;
   _delay_us(DELAY_1);//5);
   //E_set(1);
-  GPIO_write_pin(EN, 1);
+  GPIO_write_pin(LCD_44780_EN, 1);
   _delay_us( DELAY_1); //5);
   //E_set(0);
-  GPIO_write_pin(EN, 0);
+  GPIO_write_pin(LCD_44780_EN, 0);
   _delay_us( DELAY_1 ); //5);
   
 }
@@ -94,36 +95,76 @@ void LCD_44780_init(uint8_t num_cols, uint8_t num_rows ,
 		    uint8_t rs, uint8_t en,
 		    uint8_t d7, uint8_t d6, uint8_t d5, uint8_t d4)
 {
-   columns = num_cols;
-   rows = num_rows;
-   RS = rs;
-   EN = en;
-   D7 = d7;
-   D6 = d6;
-   D5 = d5;
-   D4 = d4;
+//   columns = num_cols;
+//   rows = num_rows;
+//   RS = rs;
+//   EN = en;
+//   D7 = d7;
+//   D6 = d6;
+//   D5 = d5;
+//   D4 = d4;
    
-   GPIO_pin_mode(RS, GPIO_PIN_MODE_OUTPUT);
-   GPIO_pin_mode(EN, GPIO_PIN_MODE_OUTPUT);
-   GPIO_pin_mode(D7, GPIO_PIN_MODE_OUTPUT);
-   GPIO_pin_mode(D6, GPIO_PIN_MODE_OUTPUT);
-   GPIO_pin_mode(D5, GPIO_PIN_MODE_OUTPUT);
-   GPIO_pin_mode(D4, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(RS, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(EN, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(D7, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(D6, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(D5, GPIO_PIN_MODE_OUTPUT);
+//   GPIO_pin_mode(D4, GPIO_PIN_MODE_OUTPUT);
    
 
-   //DDRB |= (1 << 4);  // RS as output
-   //DDRC |= (1 << 0);  // RW as output
-   //DDRB |= (1 << 5);  // E as output
-   //DDRB |= 0x0f;      // D4 to D7 as output
+//   //DDRB |= (1 << 4);  // RS as output
+//   //DDRC |= (1 << 0);  // RW as output
+//   //DDRB |= (1 << 5);  // E as output
+//   //DDRB |= 0x0f;      // D4 to D7 as output
+
+//   //RS_set(0);  // Command mode
+//   GPIO_write_pin(RS, 0);
+
+//   // not using RW
+//   //RW_set(0);  // Write mode
+//   
+//   //E_set(0);
+//   GPIO_write_pin(EN, 0);
+//   
+//   _delay_ms( 50 );  // wait for it to finish initialization
+//   // Set 4 bit mode
+//   write_nibble(3);
+//   _delay_us( DELAY_1 );   // was 15
+//   write_nibble(3);
+//   _delay_us( DELAY_1 );
+//   write_nibble(2);
+//   _delay_us( DELAY_1 );
+   
+//   // Now set it how we want it
+//   LCD_44780_function_set(LCD_44780_TWO_LINES);
+//   LCD_44780_entry_mode(LCD_44780_INCREMENT);
+//   LCD_44780_display_enable(LCD_44780_ON); // turn on the display
+//   LCD_44780_clear();
+//   LCD_44780_home();
+}
+// LCD_44780_init2
+
+//////////////////////////////////////////////////////////////////////////////
+///  \b LCD_44780_init2
+///  \brief Initializes LCD display from device_config.h
+//////////////////////////////////////////////////////////////////////////////
+void LCD_44780_init2(void)
+{
+
+   
+   GPIO_pin_mode(LCD_44780_RS, GPIO_PIN_MODE_OUTPUT);
+   GPIO_pin_mode(LCD_44780_EN, GPIO_PIN_MODE_OUTPUT);
+   GPIO_pin_mode(LCD_44780_D7, GPIO_PIN_MODE_OUTPUT);
+   GPIO_pin_mode(LCD_44780_D6, GPIO_PIN_MODE_OUTPUT);
+   GPIO_pin_mode(LCD_44780_D5, GPIO_PIN_MODE_OUTPUT);
+   GPIO_pin_mode(LCD_44780_D4, GPIO_PIN_MODE_OUTPUT);
 
    //RS_set(0);  // Command mode
-   GPIO_write_pin(RS, 0);
+   GPIO_write_pin(LCD_44780_RS, 0);
 
-   // not using RW
-   //RW_set(0);  // Write mode
    
    //E_set(0);
-   GPIO_write_pin(EN, 0);
+   GPIO_write_pin(LCD_44780_EN, 0);
    
    _delay_ms( 50 );  // wait for it to finish initialization
    // Set 4 bit mode
@@ -141,7 +182,6 @@ void LCD_44780_init(uint8_t num_cols, uint8_t num_rows ,
    LCD_44780_clear();
    LCD_44780_home();
 }
-
 //////////////////////////////////////////////////////////////////////////////
 ///  \b LCD_44780_write_command
 ///  \brief Send a command to lcd
@@ -274,7 +314,7 @@ void LCD_44780_set_DDRAM_address(int adr)
 uint8_t LCD_44780_goto(int col, int row)
 {
   uint8_t rtn = 0;
-  if(col < columns && row < rows)
+  if(col < LCD_44780_COLUMNS && row < LCD_44780_ROWS)
     {
       rtn = 1;
       LCD_44780_set_DDRAM_address(row * 40 + col);
@@ -317,7 +357,7 @@ int LCD_44780_write_string(char* str)
 {
   int cnt = 0;
   char ch;
-  while( ch = *str )
+  while( (ch = *str) )
     {
       cnt++;
       LCD_44780_write_data(ch);

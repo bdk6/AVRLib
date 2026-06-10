@@ -18,11 +18,10 @@ uint8_t KEYPAD_waiting(void);
 int KEYPAD_get_key(void);
 
 
-void KEYPAD_assign(GPIO_pin_t pin);
 
-int KEYPAD_is_pressed(int idx);
+uint8_t KEYPAD_is_pressed(uint8_t row, uint8_t col);
 
-int KEYPAD_press_count(int idx);
+int KEYPAD_press_count(uint8_t row, uint8_t col);
 
 
 #endif
