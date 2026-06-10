@@ -1,0 +1,29 @@
+
+
+
+
+#define F_CPU        16000000    // Set clock frequency in Hertz
+// use date -u +%Y%m%d%H%M%S utc
+#define BUILD_DATE 20230621
+#define VERSION_MAJOR      0
+#define VERSION_MINOR      1
+#define VERSION_UPDATE     0
+
+
+
+// PWM
+
+// Serial
+#define SERIAL_RX_BUFFER_SIZE     64
+#define SERIAL_TX_BUFFER_SIZE     64
+
+
+// Systick
+#define SYSTICK_COUNT     4
+
+
+
+
+
+
+

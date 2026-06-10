@@ -41,6 +41,7 @@ void LCD_44780_init(uint8_t num_cols, uint8_t num_rows ,
 		    uint8_t rs, uint8_t en,
 		      uint8_t d7, uint8_t d6, uint8_t d5, uint8_t d4);
 
+void LCD_44780_init2(void);
 
 //////////////////////////////////////////////////////////////////////////////
 ///  \b LCD_44780_write_command
