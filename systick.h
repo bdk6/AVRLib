@@ -14,10 +14,9 @@
 #ifdef __cplusplus
 extern "C"
 {
-}
 #endif
 
-#warning Remove extra brace from extern "C" in systick.h line 17
+// #warning Remove extra brace from extern "C" in systick.h line 17
 
   #include <avr/interrupt.h>
   #include <stdint.h>

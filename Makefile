@@ -130,17 +130,17 @@ datefile.txt:
 avrlib_test.o:	config.h avrlib_test.c
 	$(CC) $(CFLAGS) -c avrlib_test.c
 
-lcd_44780.o:	config.h lcd_44780.c lcd_44780.h
-	$(CC) $(CFLAGS) -c lcd_44780.c
+# lcd_44780.o:	config.h lcd_44780.c lcd_44780.h
+# 	$(CC) $(CFLAGS) -c lcd_44780.c
 
-gpio.o:	config.h gpio.c gpio.h
-	$(CC) $(CFLAGS) -c gpio.c
+# gpio.o:	config.h gpio.c gpio.h
+# 	$(CC) $(CFLAGS) -c gpio.c
 
-systick.o:	config.h systick.c systick.h
-	$(CC) $(CFLAGS) -c systick.c
+# systick.o:	config.h systick.c systick.h
+# 	$(CC) $(CFLAGS) -c systick.c
 
-softspi.o:	config.h softspi.c softspi.h
-	$(CC) $(CFLAGS) -c softspi.c
+# softspi.o:	config.h softspi.c softspi.h
+# 	$(CC) $(CFLAGS) -c softspi.c
 
 config.h:
 	cp ../config.h .

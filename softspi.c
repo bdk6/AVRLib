@@ -11,10 +11,9 @@
 #ifdef __cplusplus
 extern "C"
 {
-}
 
 #endif
-#warning Remove extra brace from extern "C" in softspi.c line 14
+// #warning Remove extra brace from extern "C" in softspi.c line 14
 
 #include <stdint.h>
 #include "config.h"
@@ -51,17 +50,17 @@ static softspi_t spis[] = { SOFTSPI_INTERFACES };
 /// @param[in] miso  GPIO pin for MISO (-1 if not used)
 /// @return  nonzero on error
 /////////////////////////////////////////////////////////////////////////////
-int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso)
-{
-  int rtn = 0;
-  sclk_pin = clk;
-  GPIO_pin_mode(clk, GPIO_PIN_MODE_OUTPUT);
-  mosi_pin = mosi;
-  //   if(mosi >= 0)
-  {
-    GPIO_pin_mode(mosi, GPIO_PIN_MODE_OUTPUT);
-  }
-// CONFLICT START
+// int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso)
+// {
+//   int rtn = 0;
+//   sclk_pin = clk;
+//   GPIO_pin_mode(clk, GPIO_PIN_MODE_OUTPUT);
+//   mosi_pin = mosi;
+//   //   if(mosi >= 0)
+//   {
+//     GPIO_pin_mode(mosi, GPIO_PIN_MODE_OUTPUT);
+//   }
+
   
     
 
@@ -75,18 +74,17 @@ int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso)
   /// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
   /// @return    Zero on success or error code.
   ////////////////////////////////////////////////////////////////////////////
-  int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
-			    softspi_mode_t mode, uint32_t bps)
-// CONFLICT SEPARATOR
-  miso_pin = miso;
-  if(miso >= 0)
-// CONFLICT END
-  {
-    GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
-  }
+//   int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
+// 			    softspi_mode_t mode, uint32_t bps)
+//   {
+//     miso_pin = miso;
+//     if(miso >= 0)
+//     {
+//       GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
+//     }
 
-  return rtn;
-}
+//   return rtn;
+// }
   
 int SOFTSPI_init2(void)
 {
@@ -220,270 +218,270 @@ int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
 
     switch(mode)
     {
-    #ifdef SOFTSPI_ENABLE_MODE_0_MSB_FIRST
+    //#ifdef SOFTSPI_ENABLE_MODE_0_MSB_FIRST
     case SPI_MODE_0_MSB_FIRST:      // idle low, sample leading
-        GPIO_write_pin(sclk_pin, 0);  // idle low
-        GPIO_write_pin(ss, 0);
-        word <<= (32 - bits);
-        for(int b = 0; b < bits; b++)
-        {
-                GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
-          GPIO_write_pin(sclk_pin, 1);
-          GPIO_write_pin(sclk_pin, 0);
-          word <<= 1;
-        }
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      word <<= (32 - bits);
+      for(int b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word <<= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_0_LSB_FIRST  
+    case SPI_MODE_0_LSB_FIRST:      // idle low, sample leading
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      for(int b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+	      GPIO_write_pin(sclk_pin, 1);
+	      GPIO_write_pin(sclk_pin, 0);
+	      word >>= 1;
+	    }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_1_MSB_FIRST
+    case SPI_MODE_1_MSB_FIRST:      // idle low, sample trailing
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      word <<= (32 - bits);
+      GPIO_write_pin(ss, 0);
+      for(int b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word <<= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_1_LSB_FIRST  
+    case SPI_MODE_1_LSB_FIRST:      // idle low, sample trailing
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word >>= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_2_MSB_FIRST
+    case SPI_MODE_2_MSB_FIRST:      // idle high, sample leading
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      word <<= (32 - bits);
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word <<= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_2_LSB_FIRST
+    case SPI_MODE_2_LSB_FIRST:      // idle high, sample leading
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word >>= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_3_MSB_FIRST
+    case SPI_MODE_3_MSB_FIRST:      // idle high, sample trailing
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      word <<= (sizeof(uint32_t) - bits);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word <<= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+
+    //#ifdef SOFTSPI_ENABLE_MODE_3_LSB_FIRST
+    case SPI_MODE_3_LSB_FIRST:      // idle high, sample trailing
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word >>= 1;
+      }
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
+            
+    //#ifdef SOFTSPI_ENABLE_MODE_0_MSB_FIRST_SLOW
+    case SPI_MODE_0_MSB_FIRST_SLOW:  // idle low, sample leading
+      GPIO_write_pin(sclk_pin, 0);   // idle low
+      GPIO_write_pin(ss, 0);
+      word <<= (sizeof(uint32_t) - bits);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+       _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word <<= 1;
+      }
+        _delay_loop_1(dly);
         GPIO_write_pin(ss, 1);
         break;
-    #endif
+    //#endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_0_LSB_FIRST  
-    case SPI_MODE_0_LSB_FIRST:      // idle low, sample leading
-        GPIO_write_pin(sclk_pin, 0);  // idle low
-        GPIO_write_pin(ss, 0);
-        for(int b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-	    GPIO_write_pin(sclk_pin, 1);
-	    GPIO_write_pin(sclk_pin, 0);
-	    word >>= 1;
-	  }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_1_MSB_FIRST
-    case SPI_MODE_1_MSB_FIRST:      // idle low, sample trailing
-          GPIO_write_pin(sclk_pin, 0);  // idle low
-          GPIO_write_pin(ss, 0);
-          word <<= (32 - bits);
-          GPIO_write_pin(ss, 0);
-          for(int b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)((word >> 16)  & 0x8000));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word <<= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_1_LSB_FIRST  
-    case SPI_MODE_1_LSB_FIRST:      // idle low, sample trailing
-          GPIO_write_pin(sclk_pin, 0);  // idle low
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word >>= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_2_MSB_FIRST
-    case SPI_MODE_2_MSB_FIRST:      // idle high, sample leading
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          word <<= (32 - bits);
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word <<= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_2_LSB_FIRST
-    case SPI_MODE_2_LSB_FIRST:      // idle high, sample leading
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word >>= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_3_MSB_FIRST
-    case SPI_MODE_3_MSB_FIRST:      // idle high, sample trailing
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word <<= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-
-    #ifdef SOFTSPI_ENABLE_MODE_3_LSB_FIRST
-    case SPI_MODE_3_LSB_FIRST:      // idle high, sample trailing
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-                  GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word >>= 1;
-          }
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_0_MSB_FIRST_SLOW
-    case SPI_MODE_0_MSB_FIRST_SLOW:  // idle low, sample leading
-          GPIO_write_pin(sclk_pin, 0);   // idle low
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word <<= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
-            
-    #ifdef SOFTSPI_ENABLE_MODE_0_LSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_0_LSB_FIRST_SLOW
     case SPI_MODE_0_LSB_FIRST_SLOW: // idle low, sample leading
-          GPIO_write_pin(sclk_pin, 0);  // idle low
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word >>= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+       _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word >>= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_1_MSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_1_MSB_FIRST_SLOW
     case SPI_MODE_1_MSB_FIRST_SLOW:  // idle low, sample trailing
-          GPIO_write_pin(sclk_pin, 0);   // idle low
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word <<= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
+      GPIO_write_pin(sclk_pin, 0);   // idle low
+      GPIO_write_pin(ss, 0);
+      word <<= (sizeof(uint32_t) - bits);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word <<= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_1_LSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_1_LSB_FIRST_SLOW
     case SPI_MODE_1_LSB_FIRST_SLOW:  // idle low, sample trailing
-          GPIO_write_pin(sclk_pin, 0);  // idle low
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 1);
-            GPIO_write_pin(sclk_pin, 0);
-            word >>= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
+      GPIO_write_pin(sclk_pin, 0);  // idle low
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 1);
+        GPIO_write_pin(sclk_pin, 0);
+        word >>= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
             
     #ifdef SOFTSPI_ENABLE_MODE_2_MSB_FIRST_SLOW
     case SPI_MODE_2_MSB_FIRST_SLOW: // idle high, sample leading
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word <<= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      word <<= (sizeof(uint32_t) - bits);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word <<= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
     #endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_2_LSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_2_LSB_FIRST_SLOW
     case SPI_MODE_2_LSB_FIRST_SLOW: // idle high, sample leading
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word >>= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word >>= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_3_MSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_3_MSB_FIRST_SLOW
     case SPI_MODE_3_MSB_FIRST_SLOW: // idle high, sample trailing
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          word <<= (sizeof(uint32_t) - bits);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word <<= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      word <<= (sizeof(uint32_t) - bits);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)((word >> 16) & 0x8000));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word <<= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif
             
-    #ifdef SOFTSPI_ENABLE_MODE_3_LSB_FIRST_SLOW
+    //#ifdef SOFTSPI_ENABLE_MODE_3_LSB_FIRST_SLOW
     case SPI_MODE_3_LSB_FIRST_SLOW: // idle high, sample trailing
-          GPIO_write_pin(sclk_pin, 1);  // idle high
-          GPIO_write_pin(ss, 0);
-          for(uint8_t b = 0; b < bits; b++)
-          {
-            _delay_loop_1(dly);
-            GPIO_write_pin(mosi_pin, (int)(word & 0x01));
-            GPIO_write_pin(sclk_pin, 0);
-            GPIO_write_pin(sclk_pin, 1);
-            word >>= 1;
-          }
-          _delay_loop_1(dly);
-          GPIO_write_pin(ss, 1);
-          break;
-    #endif            
+      GPIO_write_pin(sclk_pin, 1);  // idle high
+      GPIO_write_pin(ss, 0);
+      for(uint8_t b = 0; b < bits; b++)
+      {
+        _delay_loop_1(dly);
+        GPIO_write_pin(mosi_pin, (int)(word & 0x01));
+        GPIO_write_pin(sclk_pin, 0);
+        GPIO_write_pin(sclk_pin, 1);
+        word >>= 1;
+      }
+      _delay_loop_1(dly);
+      GPIO_write_pin(ss, 1);
+      break;
+    //#endif            
 
 	default:
 	  break;
