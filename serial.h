@@ -16,9 +16,9 @@ extern "C"
 {
 #endif
 
-  #include <stdint.h>
-  #include <avr/interrupt.h>
-  #include <avr/io.h>
+#include <stdint.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
   
 #include "config.h"
 #include "gpio.h"
@@ -29,34 +29,15 @@ extern "C"
 #define SERIAL_VERSION_DATE      (20230608L)
 
 
-  
-  //static button_t btns[NUMBER_OF_BUTTONS];
-  // static uint8_t pressed[99];   //FIFO of pressed buttons (press and release?) TODO
-  //static uint8_t fifo[BUTTONS_FIFO_SIZE];
-  
-//////////////////////////////////////////////////////////////////////////////
-/// @function SERIAL_init
-/// @brief Initialize hardware serial port.
-/// @param[in]  idx Index of serial port number (0 if only one.)
-/// @param[in]  bps Bits per second
-/// @param[in]  parity Indicates type of parity: E,O,N,0,1
-/// @param[in]  stop  Number of stop bits (1 or 2)
-/// @param[in]  bits  Number of bits in word (5 to 9)
-///
-/// @return
-/////////////////////////////////////////////////////////////////////////////
-int SERIAL_init(uint8_t idx, uint32_t bps, char parity, uint8_t stop, uint8_t bits);
 
-  int SERIAL_write(uint8_t idx, int data);
 
-  int SERIAL_read(uint8_t idx);
-
-  int SERIAL_received(uint8_t idx);
-
-  int SERIAL_sending(uint8_t idx);
-
-  int SERIAL_status(uint8_t idx);
-
+int SERIAL_init(const uint8_t idx, const uint32_t bps, const char parity, 
+                const uint8_t stop, const uint8_t bits);
+int SERIAL_write(const uint8_t idx, const int data);
+int SERIAL_read(const uint8_t idx);
+int SERIAL_received(const uint8_t idx);
+int SERIAL_sending(const uint8_t idx);
+int SERIAL_status(const uint8_t idx);
   
 #ifdef __cplusplus
 }

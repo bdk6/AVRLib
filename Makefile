@@ -83,21 +83,24 @@ override LDFLAGS       = -Wl,-Map,$(PRG).map -ffunction-sections -flto
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
-libavr.a: systick.o gpio.o  softspi.o
-	avr-ar r avrlib.a softspi.o systick.o gpio.o
+libavr.a: systick.o gpio.o  softspi.o serial.o
+	avr-ar r avrlib.a softspi.o systick.o gpio.o serial.o
 
 libdevice.a:	button.o keypad.o lcd_44780.o encoder.o dds_9833.o
 	avr-ar r libdevice.a button.o keypad.o lcd_44780.o encoder.o dds_9833.o
 
 
-libavr.elf:  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o $(LDFLAGS) $(LIBS)
+libavr.elf:  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o serial.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o avrlib.elf  libavr_test.o systick.o gpio.o lcd_44780.o softspi.o serial.o $(LDFLAGS) $(LIBS)
 
 libavr_test.o:	libavr_test.c
 	$(CC) $(CFLAGS) -c libavr_test.c
 
 gpio.o:	gpio.c gpio.h
 	$(CC) $(CFLAGS) -c gpio.c
+
+serial.o:  serial.c serial.h
+	$(CC) $(CFLAGS) -c serial.c
 
 softspi.o:	softspi.c softspi.h config.h
 	$(CC) $(CFLAGS) -c softspi.c

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 ///
-///  \file systick.c
+///  @file systick.c
 ///
-///  copyright (c) 2023, 2014 William R Cooke
+///  @copyright (c) 2026, 2023, 2014 William R Cooke
 ///
 ///  Setup and handle systick timer and interrupt on  AVR
 ///
@@ -35,7 +35,6 @@ static float ms_per_tick = 0.0;
 ///
 ///////////////////////////////////////////////////////////////////////////// 
 
-
 typedef struct systick_timer
 {
   uint32_t timeout_ticks;
@@ -45,7 +44,6 @@ typedef struct systick_timer
 } systick_timer_t;
 
 static volatile systick_timer_t timers[SYSTICK_COUNT];
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -67,7 +65,7 @@ void SYSTICK_init(const Prescale_t source)
 
   // Find ms per irq
   float freq = (float)F_CPU;
-  freq /= 256;   // 8 bit counter rolls over at 256
+  freq /= 256.0;   // 8 bit counter rolls over at 256
   switch(source)
     {
     case CLK_DIV_1:
@@ -75,19 +73,19 @@ void SYSTICK_init(const Prescale_t source)
       break;
 
     case CLK_DIV_8:
-      freq /= 8;
+      freq /= 8.0;
       break;
 
     case CLK_DIV_64:
-      freq /= 64;
+      freq /= 64.0;
       break;
 
     case CLK_DIV_256:
-      freq /= 256;
+      freq /= 256.0;
       break;
 
     case CLK_DIV_1024:
-      freq /= 1024;
+      freq /= 1024.0;
       break;
 
       // everything else we don't know
@@ -105,11 +103,11 @@ void SYSTICK_init(const Prescale_t source)
   TIMSK |= 0x01;  // enable T0 overflow interrupt
 
   for(int index = 0; index < SYSTICK_COUNT; ++index)
-    {
-      timers[index].timeout_ticks = 0;
-      timers[index].ticks_left = 0;
-      timers[index].callback = NULL;
-    }
+  {
+    timers[index].timeout_ticks = 0;
+    timers[index].ticks_left = 0;
+    timers[index].callback = NULL;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -350,14 +348,14 @@ uint32_t SYSTICK_get_ms_remaining(const uint16_t index)
 uint32_t SYSTICK_get_ticks_remaining(const uint16_t index)
 {
   uint32_t t = 0;
-   if (index < SYSTICK_COUNT)
-   {
-     uint8_t tmp = TIMSK;
-     TIMSK &= ~(0x01);
-     t = timers[index].ticks_left;
-     TIMSK = tmp;
-   }
-   return t;
+  if (index < SYSTICK_COUNT)
+  {
+    uint8_t tmp = TIMSK;
+    TIMSK &= ~(0x01);
+    t = timers[index].ticks_left;
+    TIMSK = tmp;
+  }
+  return t;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -372,13 +370,13 @@ uint32_t SYSTICK_get_ticks_remaining(const uint16_t index)
 //////////////////////////////////////////////////////////////////////////////
 void SYSTICK_set_callback(const uint16_t index, const callback_t cb)
 {
-   if (index < SYSTICK_COUNT)
-   {
-     uint8_t tmp = TIMSK;
-     TIMSK &= ~(0x01);
-     timers[index].callback = cb;
-     TIMSK = tmp;
-   }
+  if (index < SYSTICK_COUNT)
+  {
+    uint8_t tmp = TIMSK;
+    TIMSK &= ~(0x01);
+    timers[index].callback = cb;
+    TIMSK = tmp;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -422,26 +420,25 @@ float SYSTICK_get_ms_per_tick(void)
 // LPC void SYSTICK_handler(void)
 ISR(TIMER0_OVF_vect)
 {
-   ++ticks;
+  ++ticks;
 
-   for(int index = 0; index < SYSTICK_COUNT; ++index)
-     {
-       // For one-shot it decrements to 0 and stays there.
-       if(timers[index].ticks_left != 0)
-	 {
-	   timers[index].ticks_left--;
-	   if(timers[index].ticks_left == 0)
-	     {
-	       if(timers[index].repeat == 0)
-		 {
-		   timers[index].ticks_left = timers[index].timeout_ticks;
-		 }
-	       if(timers[index].callback != NULL)
-		 {
-		   timers[index].callback();
-		 }
-	     }
-	 }
-     }
-
+  for(int index = 0; index < SYSTICK_COUNT; ++index)
+  {
+    // For one-shot it decrements to 0 and stays there.
+    if(timers[index].ticks_left != 0)
+	  {
+	    timers[index].ticks_left--;
+	    if(timers[index].ticks_left == 0)
+	    {
+	      if(timers[index].repeat == 0)
+		    {
+		      timers[index].ticks_left = timers[index].timeout_ticks;
+		    }
+	      if(timers[index].callback != NULL)
+		    {
+		      timers[index].callback();
+		    }
+	    }
+	  }
+  }
 }

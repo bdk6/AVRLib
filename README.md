@@ -39,8 +39,8 @@ Configure the following items:
 
 * ADC:  (Not yet implemented)
   
-
 * GPIO:
+  >GPIO doesn't require any configuration parameters.
   
 * PWM:
   
