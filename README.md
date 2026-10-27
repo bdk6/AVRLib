@@ -48,7 +48,15 @@ Configure the following items:
   * SERIAL_RX_BUFFER_SIZE    The number of bytes to use for the receive buffer.
   * SERIAL_TX_BUFFER_SIZE    The number of bytes for the transmit buffer.
 
-* SoftSPI:
+* SPI:       (Not yet implemented)
+
+* SoftSPI:   
+
+* Systick:
+  >Systick offers a real-time clock, counting ticks and milliseconds.  It uses 
+  > the main CPU clock divided by a selected prescaler.  The timer used is 
+  > 8 bit timer 0, so it rolls over and interrupts every 256 cycles (after 
+  > prescaling.))
   
 
 ### device_config.h
