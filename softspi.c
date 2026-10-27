@@ -63,29 +63,35 @@ static softspi_t spis[] = { SOFTSPI_INTERFACES };
 
   
     
-
-  ////////////////////////////////////////////////////////////////////////////
-  /// @fn SOFTSPI_set_interface
-  /// @brief Set up a softspi's parameters
-  /// @param[in] idx   SoftSPI index 0 to # buttons - 1
-  /// @param[in] ss    GPIO pin for slave select, -1 if not used
-  /// @param[in] bits  Number of bits per transfer
-  /// @param[in] mode  SPI mode to set clock phase and polarity
-  /// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
-  /// @return    Zero on success or error code.
-  ////////////////////////////////////////////////////////////////////////////
-//   int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
+// Duplicate
+//   ////////////////////////////////////////////////////////////////////////////
+//   /// @fn SOFTSPI_set_interface
+//   /// @brief Set up a softspi's parameters
+//   /// @param[in] idx   SoftSPI index 0 to # buttons - 1
+//   /// @param[in] ss    GPIO pin for slave select, -1 if not used
+//   /// @param[in] bits  Number of bits per transfer
+//   /// @param[in] mode  SPI mode to set clock phase and polarity
+//   /// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
+//   /// @return    Zero on success or error code.
+//   ////////////////////////////////////////////////////////////////////////////
+//   int SOFTSPI_set_interface(uint8_t idx, GPIO_pin_t ss, uint8_t bits,
 // 			    softspi_mode_t mode, uint32_t bps)
 //   {
-//     miso_pin = miso;
-//     if(miso >= 0)
-//     {
-//       GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
-//     }
+//     int rtn = 0;
+//     // miso_pin = miso;
+//     // if(miso >= 0)
+//     // {
+//     //   GPIO_pin_mode(miso, GPIO_PIN_MODE_INPUT_PULLUP);
+//     // }
 
 //   return rtn;
 // }
-  
+
+/////////////////////////////////////////////////////////////////////////////
+/// @fn SOFTSPI_init2
+/// @brief Initializes soft SPI from configuration file.
+/// @return 0 on success, -1 on failure.
+/////////////////////////////////////////////////////////////////////////////
 int SOFTSPI_init2(void)
 {
   int rtn = 0;
@@ -151,7 +157,7 @@ int SOFTSPI_init2(void)
 /// @param[in] bps   Max speed in bits per second. 0 for fast as possible.
 /// @return    Zero on success or error code.
 ////////////////////////////////////////////////////////////////////////////
-int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
+int SOFTSPI_set_interface(uint8_t idx, GPIO_pin_t ss, uint8_t bits,
                           softspi_mode_t mode, uint32_t bps)
 {
   int rtn = 0;

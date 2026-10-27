@@ -57,10 +57,9 @@ extern "C"
 /// @param[in] clk   GPIO pin for sclk
 /// @param[in] mosi  GPIO pin for MOSI (-1 if not used)
 /// @param[in] miso  GPIO pin for MISO (-1 if not used)
-
 /// @return
 /////////////////////////////////////////////////////////////////////////////
-  int SOFTSPI_init(uint8_t clk, int8_t mosi, int8_t miso);
+  int SOFTSPI_init(GPIO_pin_t clk, GPIO_pin_t mosi, GPIO_pin_t miso);
   int SOFTSPI_init2(void);
         
   ////////////////////////////////////////////////////////////////////////////
@@ -73,7 +72,7 @@ extern "C"
   /// @param[in] bps   Max speed in bits per second: 0 for fast as possible.
   /// @return    TODO
   ////////////////////////////////////////////////////////////////////////////
-  int SOFTSPI_set_interface(uint8_t idx, int8_t ss, uint8_t bits,
+  int SOFTSPI_set_interface(uint8_t idx, GPIO_pin_t ss, uint8_t bits,
 			    softspi_mode_t mode,  uint32_t bps);
     
   

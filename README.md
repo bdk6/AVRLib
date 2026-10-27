@@ -28,15 +28,16 @@ using the two config files:
 config.h          for the AVR library
 device_config.h   for the generic library
 
-###config.h
+### config.h
 Configure the following items:
-* F_CPU         The CPU operating frequency in Hertz (8 MHz is 8000000).
-* BUILD_DATE    Date of this build in YYYYMMDD format
-* VERSION_MAJOR  |
-* VERSION_MINOR   > Version number of the library -- do not change
-* VERSION_UPDATE |
+* General Configuration
+   * F_CPU         The CPU operating frequency in Hertz (8 MHz is 8000000).
+   * BUILD_DATE    Date of this build in YYYYMMDD format
+  * VERSION_MAJOR  |
+  * VERSION_MINOR   > Version number of the library -- do not change
+  * VERSION_UPDATE |
 
-* ADC:
+* ADC:  (Not yet implemented)
   
 
 * GPIO:

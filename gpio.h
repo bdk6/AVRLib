@@ -8,12 +8,12 @@
 #include <avr/io.h>
 
 //////////////////////////////////////////////////////////////////////////////
-/// @enum GPIO_Pin_t
+/// @enum GPIO_pin_t
 /// @brief Defines names for gpio pin numbers
 /// @remark Initially defined for ATMega 8 pins.  Revisit for others.
 /////////////////////////////////////////////////////////////////////////////
 
-typedef enum GPIO_Pin
+typedef enum GPIO_pin
   {
     GPIO_PIN_B0         = 8,
     GPIO_PIN_B1         = 9,
@@ -42,38 +42,38 @@ typedef enum GPIO_Pin
     GPIO_PIN_D7         = 31,
     
     GPIO_PIN_NONE       = 255
-  } GPIO_Pin_t;
+  } GPIO_pin_t;
 
 //////////////////////////////////////////////////////////////////////////////
-/// @enum GPIO_Port_t
+/// @enum GPIO_port_t
 /// @brief Defines names for gpio ports
 /// @remark Currently defined for ATMega8, revisit for others
 /////////////////////////////////////////////////////////////////////////////
-typedef enum GPIO_Port
+typedef enum GPIO_port
   {
     GPIO_PORT_B         = 1,
     GPIO_PORT_C         = 2,
     GPIO_PORT_D         = 3
-  } GPIO_Port_t;
+  } GPIO_port_t;
 
 
 //////////////////////////////////////////////////////////////////////////////
-/// @enum GPIO_Mode_t
+/// @enum GPIO_mode_t
 /// @brief Defines names for gpio pin modes
 //////////////////////////////////////////////////////////////////////////////
-typedef enum GPIO_Mode
+typedef enum GPIO_mode
   {
     GPIO_PIN_MODE_INPUT        = 0,
     GPIO_PIN_MODE_OUTPUT       = 1,
     GPIO_PIN_MODE_INPUT_PULLUP = 2
-  } GPIO_Mode_t;
+  } GPIO_mode_t;
 
     
-void GPIO_init( int modeb, int pinb, int modec, int pinc, int moded, int pind);
-void GPIO_pin_mode(int pin, int mode);
-void GPIO_write_pin(int pin, int val);
-void GPIO_toggle_pin(int pin);
-int GPIO_read_pin(int pin);
-int GPIO_read_output_pin(int pin);
+// void GPIO_init( int modeb, int pinb, int modec, int pinc, int moded, int pind);
+void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
+void GPIO_write_pin(const GPIO_pin_t pin, const int val);
+void GPIO_toggle_pin(const GPIO_pin_t pin);
+int GPIO_read_pin(const GPIO_pin_t pin);
+int GPIO_read_output_pin(const GPIO_pin_t pin);
 
 #endif

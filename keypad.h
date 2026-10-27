@@ -19,9 +19,9 @@ int KEYPAD_get_key(void);
 
 
 
-uint8_t KEYPAD_is_pressed(uint8_t row, uint8_t col);
+uint8_t KEYPAD_is_pressed(const uint8_t row, const uint8_t col);
 
-int KEYPAD_press_count(uint8_t row, uint8_t col);
+int KEYPAD_press_count(const uint8_t row, const uint8_t col);
 
 
 #endif

@@ -9,8 +9,8 @@
 #include "keypad.h"
 
 
-static GPIO_Pin_t rows[KEYPAD_NUMBER_ROWS] = {KEYPAD_ROW_PINS};
-static GPIO_Pin_t cols[KEYPAD_NUMBER_COLS] = {KEYPAD_COL_PINS};
+static GPIO_pin_t rows[KEYPAD_NUMBER_ROWS] = {KEYPAD_ROW_PINS};
+static GPIO_pin_t cols[KEYPAD_NUMBER_COLS] = {KEYPAD_COL_PINS};
 
 // Use compile-time calculations for sizes of arrays
 //static const uint8_t numberRows = 4; // TODO sizeof(rows) / sizeof(rows[0]);
@@ -18,7 +18,7 @@ static GPIO_Pin_t cols[KEYPAD_NUMBER_COLS] = {KEYPAD_COL_PINS};
 
 typedef struct key
 {
-        uint8_t pressed;
+  uint8_t pressed;
 } key_t;
 
 key_t keys[KEYPAD_NUMBER_ROWS][KEYPAD_NUMBER_COLS];
@@ -38,7 +38,7 @@ static void scan_callback(void);
 /// @brief Inserts a keypress code (release later) into FIFO.
 /// @param[in] k Key code to insert
 //////////////////////////////////////////////////////////////////////////////
-static void insert(uint8_t k)
+static void insert(const uint8_t k)
 {
   if( (tail + 1) % KEYPAD_BUFFER_SIZE != head)
   {
@@ -115,21 +115,22 @@ int KEYPAD_get_key(void)
 
 // TODO functions that might come in handy later
 
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 /// @fn KEYPAD_is_pressed
 /// @brief Checks if a key is currently down.
 /// @param[in] row Row of key to check
 /// @param[in] col Column of key to check
 /// @return 1 if pressed, 0 if not
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 uint8_t KEYPAD_is_pressed(uint8_t row, uint8_t col);
 
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 /// @fn KEYPAD_press_count
 /// @brief Gets number of events key has been pressed (time.)
 /// @param[in] row Row of key to check
 /// @param[in] col Column of key to check
-int KEYPAD_press_count(uint8_t row, uint8_t col);
+/////////////////////////////////////////////////////////////////////////////
+int KEYPAD_press_count(const uint8_t row, const uint8_t col);
 
 
 //////////////////////////////////////////////////////////////////////////////
