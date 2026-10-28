@@ -40,9 +40,22 @@ Configure the following items:
 * ADC:  (Not yet implemented)
   
 * GPIO:
-  >GPIO doesn't require any configuration parameters.
+  >GPIO doesn't require any configuration parameters.  Each pin is 
+  > numbered consecitively by port.  Port A, bit 0 is pin 0.  Port 
+  > C, bit 3 is pin 19.  There are enums defined as GPIO_PIN_B0, 
+  > GPIO_PIN_D7, etc.  Each pin can have its mode set to one of the 
+  > following:
+   * GPIO_PIN_MODE_INPUT    Input without a pullup.
+   * GPIO_PIN_MODE_OUTPUT   Output.
+   * GPIO_PIN_MODE_INPUT_PULLUP  Input with a pullup.
+
+   * void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
+   * void GPIO_write_pin(const GPIO_pin_t pin, const int val);
+   * void GPIO_toggle_pin(const GPIO_pin_t pin);
+   * int GPIO_read_pin(const GPIO_pin_t pin);
+   * int GPIO_read_output_pin(const GPIO_pin_t pin);
   
-* PWM:
+* PWM:  (Not yet implemented)
   
 * Serial:
   * SERIAL_RX_BUFFER_SIZE    The number of bytes to use for the receive buffer.
@@ -56,7 +69,11 @@ Configure the following items:
   >Systick offers a real-time clock, counting ticks and milliseconds.  It uses 
   > the main CPU clock divided by a selected prescaler.  The timer used is 
   > 8 bit timer 0, so it rolls over and interrupts every 256 cycles (after 
-  > prescaling.))
+  > prescaling.)
+  > Systick also provides for timed callbacks.  Each callback can run a 
+  > single time or repetitively after a set number of ticks or milliseconds.
+   * SYSTICK_COUNT   Set to the number of callback timers desired.
+
   
 
 ### device_config.h
