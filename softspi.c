@@ -107,16 +107,18 @@ int SOFTSPI_init2(void)
   {
     GPIO_pin_mode(SOFTSPI_MISO, GPIO_PIN_MODE_INPUT_PULLUP);
   }
+
   // TODO calc delay ticks from bit rate
   #warning Need to add code to calculate delay ticks to softspi.c
+
   for(int idx = 0; idx < NUMBER_INTERFACES; idx++)
   {
-          // deselect each device
-          if(spis[idx].ss_pin != GPIO_PIN_NONE)
-          {
-                  GPIO_pin_mode(spis[idx].ss_pin, GPIO_PIN_MODE_OUTPUT);
-                  GPIO_write_pin(spis[idx].ss_pin, 1);
-          }
+    // deselect each device
+    if(spis[idx].ss_pin != GPIO_PIN_NONE)
+    {
+      GPIO_pin_mode(spis[idx].ss_pin, GPIO_PIN_MODE_OUTPUT);
+      GPIO_write_pin(spis[idx].ss_pin, 1);
+    }
     // The a slow speed is requested, it is handled with _delay_us().
     // The max speed without any intentional slowing is somewhere
     // around 1 Mbs;  each bit takes approximately 1000 nS to send.  If

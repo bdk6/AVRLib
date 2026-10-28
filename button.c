@@ -13,8 +13,8 @@ extern "C"
 #include "systick.h"
 #include "button.h"
 
-GPIO_Pin_t button_pins[] = {BUTTON_PINS};
-#define NUMBER_BUTTONS (sizeof(button_pins) / sizeof(GPIO_Pin_t))
+GPIO_pin_t button_pins[] = {BUTTON_PINS};
+#define NUMBER_BUTTONS (sizeof(button_pins) / sizeof(GPIO_pin_t))
 
 static void callback(void);
 

@@ -7,39 +7,39 @@ library for controlling AVR specific devices in a well defined way and a
 library for generic peripheral devices.  
 
 The controlled AVR devices are:
-ADC     -- Analog to Digital Converter.
-GPIO    -- General Purpose Input / Output pins.
-PWM     -- Pulse Width Modulation using AVR timer(s).
-Serial  -- Serial input and output using the AVR UART.
-SPI     -- Serial Peripheral Interface using AVR hardware SPI interface.
-SoftSPI -- Serial Peripheral Interface using GPIO pins.
-systick -- A system timer for periodic timer ticks.
+* ADC     -- Analog to Digital Converter.
+* GPIO    -- General Purpose Input / Output pins.
+* PWM     -- Pulse Width Modulation using AVR timer(s).
+* Serial  -- Serial input and output using the AVR UART.
+* SPI     -- Serial Peripheral Interface using AVR hardware SPI interface.
+* SoftSPI -- Serial Peripheral Interface using GPIO pins.
+* systick -- A system timer for periodic timer ticks.
 
 The generic device library depends on the AVR library.
 The controlled generic devices are:
-button     -- Individual pushbutton switches.
-DDS_9833   -- The Analog Devices AD9833 Direct Digital Synthesis IC.
-encoder    -- Generic quadrature rotary encoder.
-keypad     -- Matrix keypad of pushbutton switches.
-lcd_44780 -- Standard character LCDs using HD44780 or equivalent.
+* button     -- Individual pushbutton switches.
+* DDS_9833   -- The Analog Devices AD9833 Direct Digital Synthesis IC.
+* encoder    -- Generic quadrature rotary encoder.
+* keypad     -- Matrix keypad of pushbutton switches.
+* lcd_44780 -- Standard character LCDs using HD44780 or equivalent.
 
 The two libraries should be configured and built for your specific project 
 using the two config files:
-config.h          for the AVR library
-device_config.h   for the generic library
+* config.h          for the AVR library
+* device_config.h   for the generic library
 
 ## Using the Libraries
-The short story on how to sue the libraries is this.
+The short story on how to use the libraries is this:
 1. Configure the needed devices in _config.h_ and _device_config.h_
-2. Run **make** with with **make** for the AVRlib library or **make -f Makefile_device** for the device library.
+2. Run **make** with **make** for the AVRlib library or **make -f Makefile_device** for the device library.
 3. Add needed includes and function calls into your code, build, and link with the two libraries as needed.
 
 
 ### config.h
 Configure the following items:
 * General Configuration
-   * F_CPU         The CPU operating frequency in Hertz (8 MHz is 8000000).
-   * BUILD_DATE    Date of this build in YYYYMMDD format
+  * F_CPU         CPU frequency in Hertz (8 MHz is 8000000). Needed for all timing.
+  * BUILD_DATE    Date of this build in YYYYMMDD format
   * VERSION_MAJOR  |
   * VERSION_MINOR   > Version number of the library -- do not change
   * VERSION_UPDATE |
@@ -53,31 +53,31 @@ Configure the following items:
   > GPIO_PIN_D7, etc.
 
   > GPIO pin names (GPIO_pin_t):
-  * GPIO_PIN_B0         = 8,
-  * GPIO_PIN_B1         = 9,
-  * GPIO_PIN_B2         = 10,
-  * GPIO_PIN_B3         = 11,
-  * GPIO_PIN_B4         = 12,
-  * GPIO_PIN_B5         = 13,
-  * GPIO_PIN_B6         = 14,
-  * GPIO_PIN_B7         = 15,
+  * GPIO_PIN_B0         = 8
+  * GPIO_PIN_B1         = 9
+  * GPIO_PIN_B2         = 10
+  * GPIO_PIN_B3         = 11
+  * GPIO_PIN_B4         = 12
+  * GPIO_PIN_B5         = 13
+  * GPIO_PIN_B6         = 14
+  * GPIO_PIN_B7         = 15
     
-  * GPIO_PIN_C0         = 16,
-  * GPIO_PIN_C1         = 17,
-  * GPIO_PIN_C2         = 18,
-  * GPIO_PIN_C3         = 19,
-  * GPIO_PIN_C4         = 20,
-  * GPIO_PIN_C5         = 21,
-  * GPIO_PIN_C6         = 22,
+  * GPIO_PIN_C0         = 16
+  * GPIO_PIN_C1         = 17
+  * GPIO_PIN_C2         = 18
+  * GPIO_PIN_C3         = 19
+  * GPIO_PIN_C4         = 20
+  * GPIO_PIN_C5         = 21
+  * GPIO_PIN_C6         = 22
     
-  * GPIO_PIN_D0         = 24,
-  * GPIO_PIN_D1         = 25,
-  * GPIO_PIN_D2         = 26,
-  * GPIO_PIN_D3         = 27,
-  * GPIO_PIN_D4         = 28,
-  * GPIO_PIN_D5         = 29,
-  * GPIO_PIN_D6         = 30,
-  * GPIO_PIN_D7         = 31,
+  * GPIO_PIN_D0         = 24
+  * GPIO_PIN_D1         = 25
+  * GPIO_PIN_D2         = 26
+  * GPIO_PIN_D3         = 27
+  * GPIO_PIN_D4         = 28
+  * GPIO_PIN_D5         = 29
+  * GPIO_PIN_D6         = 30
+  * GPIO_PIN_D7         = 31
     
   * GPIO_PIN_NONE       = 255
 
@@ -165,6 +165,145 @@ Configure the following items:
    * SYSTICK_COUNT   Set to the number of callback timers desired.
 
   
+typedef void ( *callback_t) (void);
+
+  > Prescale_t
+  * CLK_NONE     = 0,
+  * CLK_DIV_1    = 1,
+  * CLK_DIV_8    = 2,
+  * CLK_DIV_64   = 3,
+  * CLK_DIV_256  = 4,
+  * CLK_DIV_1024 = 5,
+  * CLK_EXT_T0   = 6,
+  * CLK_EXT_T1   = 7
+
+  * #define SYSTICK_VERSION_MAJOR     0
+  * #define SYSTICK_VERSION_MINOR     1
+  * #define SYSTICK_VERSION_BUILD     1
+  * #define SYSTICK_VERSION_DATE      (20261027L)
+
+
+  > Functions for SYSTICK:
+  * void SYSTICK_init(const Prescale_t source);
+  * uint32_t SYSTICK_get_ticks(void);
+  * uint64_t SYSTICK_get_ticks_long(void);
+  * uint32_t SYSTICK_get_milliseconds(void);
+  * uint64_t SYSTICK_get_milliseconds_long(void);
+  * int SYSTICK_set_timer_ms(const int32_t ms, const uint8_t repeat, const callback_t cb);
+  * int SYSTICK_set_timer_ticks(const int32_t ticks, const uint8_t repeat, const callback_t cb);
+  * void SYSTICK_modify_timer_ms(const uint16_t index, const int32_t ms, const uint8_t repeat, callback_t cb);
+  * void SYSTICK_modify_timer_ticks(const uint16_t index, const int32_t ticks, const uint8_t repeat, const callback_t cb);
+  * uint32_t SYSTICK_get_ms_remaining(const uint16_t index);
+  * uint32_t SYSTICK_get_ticks_remaining(const uint16_t index);
+  * void SYSTICK_set_callback(const uint16_t index, const callback_t callback);
+  * float SYSTICK_get_irq_frequency(void);
+  * float SYSTICK_get_ms_per_tick(void);
+  * // void SYSTICK_handler(void) __attribute__((used,interrupt));
+
 
 ### device_config.h
+
+
+//////////////////////////////////////////////////////////////////////////////
+// button
+// BUTTON_PINS should list GPIO pin names for all buttons, comma separated.
+// BUTTON_BUFFER_SIZE defines size of a FIFO circular buffer of presses.
+// BUTTON_STABLE_COUNT Is how many reads in a row must button be stable.
+//////////////////////////////////////////////////////////////////////////////
+#define BUTTON_PINS  GPIO_PIN_B4
+//   , GPIO_PIN_D2, GPIO_PIN_D7
+#define BUTTON_BUFFER_SIZE        4
+#define BUTTON_STABLE_COUNT      10
+// #define BUTTON_ACTIVE 1,0,0  // same # as pins
+// #define BUTTON_STABLE_COUNTS 10, 5, 4  // same # as pins
+
+
+
+* dds_9833
+  > Not yet implemented
+
+
+
+
+* encoder
+  > Quadrature rotary encoder(s).  Can have multiple encoders, two pins each.
+  > The code will track a count based on rotation of the encoder. The count 
+  > will increment for clockwise rotation and decrement for counter-clockwise 
+  > rotation.  The amount it increments per amount of turn will vary based 
+  > on speed of rotation.  There are four rates of change: LOW, MED, FAST, 
+  > and VERY_FAST.  The number of ticks between changes of the encoder 
+  > determines which rate to use.  The boundary number of ticks for each 
+  > level are configured here.
+    * ENCODER_PINS
+      > A list of pins used for the encoders.  As many encoders as you have 
+      > pins available for can be accommodated.  Each takes two pins.  The 
+      > list is in order, encoder 1 pin A, encoder 1 pin B, encoder 2 pin A, 
+      > encoder 2 pin B, ... etc.  Separate all pin names with commas.
+    * ENCODER_INC_LOW
+      > Number to change count when encoder is rotated slowly.
+    * ENCODER_INC_MED
+      > Number to change count when encoder is rotated medium fast.
+    * ENCODER_INC_HIGH
+      > Number to change count when encoder is rotated fast.
+    * ENCODER_INC_VERY_HIGH
+      > Number to change count when encoder is rotated very fast.
+    * ENCODER_TICKS_LOW_MED
+      > Number of ticks boundary from low to med speed rotation.
+    * ENCODER_TICKS_MED_HIGH
+      >Number of ticks boundary from med to high speed.
+    * ENCODER_TICKS_HIGH_VERY_HIGH
+      >Number of ticks boundary from high to very high.
+//
+//                    enc 1 pin A, enc 1 pin B, enc 2 pin A, enc 2 pin B, ...
+/////////////////////////////////////////////////////////////////////////////
+#define ENCODER_PINS  GPIO_PIN_D2, GPIO_PIN_D3
+// How many counts to change for slow, medium, fast revolution
+#define ENCODER_INC_LOW  1
+#define ENCODER_INC_MED  100
+#define ENCODER_INC_HIGH  10000
+#define ENCODER_INC_VERY_HIGH  1000000L
+// Ticks to change from slow to medium resolution
+#define ENCODER_TICKS_LOW_MED   200
+// Ticks to change from medium to fast resolution
+#define ENCODER_TICKS_MED_HIGH   50
+// Ticks to change from high to very high
+#define ENCODER_TICKS_HIGH_VERY_HIGH   10
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// keypad
+// Define the pins for rows and columns with a comma separated list
+// of pin names for each.
+// BUFFER_SIZE is the number of bytes for the FIFO buffer of key presses
+// STABLE_COUNT is how many scans the press must be stable to be valid
+/////////////////////////////////////////////////////////////////////////////
+#define KEYPAD_NUMBER_ROWS        4
+#define KEYPAD_NUMBER_COLS        4
+#define KEYPAD_ROW_PINS  GPIO_PIN_D4, GPIO_PIN_D5, GPIO_PIN_D6, GPIO_PIN_D7
+#define KEYPAD_COL_PINS  GPIO_PIN_C0, GPIO_PIN_C1, GPIO_PIN_C2, GPIO_PIN_C3
+#define KEYPAD_BUFFER_SIZE        8
+#define KEYPAD_STABLE_COUNT       5
+
+/////////////////////////////////////////////////////////////////////////////
+// LCD_44780
+// Define the pins for LCD using GPIO pin names
+// LCD is operated in 4 bit mode.
+// RS Register Select pin.
+// EN Enable pin.
+// D7 - D4 Data bus pins.
+// COLUMNS How many columns the LCD shows.
+// ROWS how many rows are on the display.
+/////////////////////////////////////////////////////////////////////////////
+
+#define LCD_44780_RS            GPIO_PIN_B1
+#define LCD_44780_EN            GPIO_PIN_B0
+#define LCD_44780_D7            GPIO_PIN_D7
+#define LCD_44780_D6            GPIO_PIN_D6
+#define LCD_44780_D5            GPIO_PIN_D5
+#define LCD_44780_D4            GPIO_PIN_D4
+#define LCD_44780_COLUMNS       16
+#define LCD_44780_ROWS          2
+
+#endif 
 

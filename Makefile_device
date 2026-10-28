@@ -84,21 +84,21 @@ OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
 
-devicelib.a:	buttons.o keypad.o lcd44780.o
-	avr-ar r devicelib.a buttons.o keypad.o lcd44780.o
+devicelib.a:	button.o keypad.o lcd_44780.o
+	avr-ar r devicelib.a button.o keypad.o lcd_44780.o
 
 
 datefile.txt:
 	date -u +%Y%m%d%H%M%S >datefile.txt
 
-devicelib.elf:  devicelib_test.o buttons.o keypad.o lcd44780.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib.elf devicelib_test.o buttons.o keypad.o lcd44780.o $(LDFLAGS) $(LIBS)
+devicelib.elf:  devicelib_test.o buttonso keypad.o lcd44780.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib.elf devicelib_test.o button.o keypad.o lcd44780.o $(LDFLAGS) $(LIBS)
 
 devicelib_test.o:  devicelib_test.c
 	$(CC) $(CFLAGS) -c devicelib_test.c
 
-buttons.o:  buttons.c buttons.h device_config.h
-	$(CC) $(CFLAGS) -c buttons.c
+button.o:  button.c button.h device_config.h
+	$(CC) $(CFLAGS) -c button.c
 
 keypad.o:  keypad.c keypad.h device_config.h
 	$(CC) $(CFLAGS) -c keypad.c

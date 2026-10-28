@@ -16,12 +16,8 @@
 void BUTTON_init(void);
 int BUTTON_waiting(void);
 int BUTTON_get_button(void);
-
-
-void BUTTON_assign(GPIO_Pin_t pin);
-
+void BUTTON_assign(GPIO_pin_t pin);
 int BUTTON_is_pressed(int idx);
-
 int BUTTON_press_count(int idx);
 
 

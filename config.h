@@ -47,10 +47,9 @@
 
 // bps       ss_pin            mode                bits
 // u32       gpio pin          mode_t              u8
-
 #define SOFTSPI_INTERFACES   \
-   {0,        GPIO_PIN_C5, 0,  SPI_MODE_2_MSB_FIRST,   16},  \
-   {0,     GPIO_PIN_C4, 0, SPI_MODE_2_MSB_FIRST, 8}
+   {0,    GPIO_PIN_C5, 0,  SPI_MODE_2_MSB_FIRST,   16},  \
+   {0,    GPIO_PIN_C4, 0,  SPI_MODE_2_MSB_FIRST,    8}
 
 
 //{ 100000,   GPIO_PIN_C4,   SPI_MODE_2_MSB_FIRST,    8 }
@@ -61,6 +60,12 @@
 
 // SPI
 
+/////////////////////////////////////////////////////////////////////////////
 // Systick
+// Keeps track of time in ticks and milliseconds.  Has a configurable 
+// number of repeating or one-shot callback timers.  Configure the number of 
+// callback timers desired here.
+/////////////////////////////////////////////////////////////////////////////
+
 #define SYSTICK_COUNT    4
 
