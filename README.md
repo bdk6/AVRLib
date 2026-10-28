@@ -28,6 +28,13 @@ using the two config files:
 config.h          for the AVR library
 device_config.h   for the generic library
 
+## Using the Libraries
+The short story on how to sue the libraries is this.
+1. Configure the needed devices in _config.h_ and _device_config.h_
+2. Run **make** with with **make** for the AVRlib library or **make -f Makefile_device** for the device library.
+3. Add needed includes and function calls into your code, build, and link with the two libraries as needed.
+
+
 ### config.h
 Configure the following items:
 * General Configuration
@@ -132,12 +139,12 @@ Configure the following items:
   * SPI_MODE_3_MSB_FIRST_SLOW         = 14, // idle high, sample on trailing
   * SPI_MODE_3_LSB_FIRST_SLOW         = 15, // idle high, sample on trailing
 
-  > The number of interfaces is set as:
-  > // bps       ss_pin            mode                bits
-  > // u32       gpio pin          mode_t              u8
-  > #define SOFTSPI_INTERFACES   \
-  >    {0,    GPIO_PIN_C5, 0,  SPI_MODE_2_MSB_FIRST,   16},  \
-  >    {0,    GPIO_PIN_C4, 0,  SPI_MODE_2_MSB_FIRST,    8}
+  > The number of interfaces is set as:  
+  > // bps       ss_pin            mode                bits  
+  > // u32       gpio pin          mode_t              u8  
+  > #define SOFTSPI_INTERFACES   \  
+  >    {0,    GPIO_PIN_C5, 0,  SPI_MODE_2_MSB_FIRST,   16},  \  
+  >    {0,    GPIO_PIN_C4, 0,  SPI_MODE_2_MSB_FIRST,    8}  
 
 
   > The functions available for the softSPI interfaces:
