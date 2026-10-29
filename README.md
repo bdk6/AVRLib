@@ -37,72 +37,72 @@ The short story on how to use the libraries is this:
 
 ### config.h
 Configure the following items:
-* General Configuration
+* **General Configuration**
   * F_CPU         CPU frequency in Hertz (8 MHz is 8000000). Needed for all timing.
   * BUILD_DATE    Date of this build in YYYYMMDD format
   * VERSION_MAJOR  |
   * VERSION_MINOR   > Version number of the library -- do not change
   * VERSION_UPDATE |
 
-* ADC:  (Not yet implemented)
+* **ADC**  (Not yet implemented)
   
-* GPIO:
+* **GPIO**
   >GPIO doesn't require any configuration parameters.  Each pin is 
   > numbered consecitively by port.  Port A, bit 0 is pin 0.  Port 
   > C, bit 3 is pin 19.  There are enums defined as GPIO_PIN_B0, 
   > GPIO_PIN_D7, etc.
 
   > GPIO pin names (GPIO_pin_t):
-  * GPIO_PIN_B0         = 8
-  * GPIO_PIN_B1         = 9
-  * GPIO_PIN_B2         = 10
-  * GPIO_PIN_B3         = 11
-  * GPIO_PIN_B4         = 12
-  * GPIO_PIN_B5         = 13
-  * GPIO_PIN_B6         = 14
-  * GPIO_PIN_B7         = 15
+   * GPIO_PIN_B0         = 8
+   * GPIO_PIN_B1         = 9
+   * GPIO_PIN_B2         = 10
+   * GPIO_PIN_B3         = 11
+   * GPIO_PIN_B4         = 12
+   * GPIO_PIN_B5         = 13
+   * GPIO_PIN_B6         = 14
+   * GPIO_PIN_B7         = 15
     
-  * GPIO_PIN_C0         = 16
-  * GPIO_PIN_C1         = 17
-  * GPIO_PIN_C2         = 18
-  * GPIO_PIN_C3         = 19
-  * GPIO_PIN_C4         = 20
-  * GPIO_PIN_C5         = 21
-  * GPIO_PIN_C6         = 22
+   * GPIO_PIN_C0         = 16
+   * GPIO_PIN_C1         = 17
+   * GPIO_PIN_C2         = 18
+   * GPIO_PIN_C3         = 19
+   * GPIO_PIN_C4         = 20
+   * GPIO_PIN_C5         = 21
+   * GPIO_PIN_C6         = 22
     
-  * GPIO_PIN_D0         = 24
-  * GPIO_PIN_D1         = 25
-  * GPIO_PIN_D2         = 26
-  * GPIO_PIN_D3         = 27
-  * GPIO_PIN_D4         = 28
-  * GPIO_PIN_D5         = 29
-  * GPIO_PIN_D6         = 30
-  * GPIO_PIN_D7         = 31
+   * GPIO_PIN_D0         = 24
+   * GPIO_PIN_D1         = 25
+   * GPIO_PIN_D2         = 26
+   * GPIO_PIN_D3         = 27
+   * GPIO_PIN_D4         = 28
+   * GPIO_PIN_D5         = 29
+   * GPIO_PIN_D6         = 30
+   * GPIO_PIN_D7         = 31
     
-  * GPIO_PIN_NONE       = 255
+   * GPIO_PIN_NONE       = 255
 
 
   > GPIO pin modes:
-   * GPIO_PIN_MODE_INPUT    Input without a pullup.
-   * GPIO_PIN_MODE_OUTPUT   Output.
-   * GPIO_PIN_MODE_INPUT_PULLUP  Input with a pullup.
+    * GPIO_PIN_MODE_INPUT    Input without a pullup.
+    * GPIO_PIN_MODE_OUTPUT   Output.
+    * GPIO_PIN_MODE_INPUT_PULLUP  Input with a pullup.
 
-   > Functions for GPIO:
-   * void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
-   * void GPIO_write_pin(const GPIO_pin_t pin, const int val);
-   * void GPIO_toggle_pin(const GPIO_pin_t pin);
-   * int GPIO_read_pin(const GPIO_pin_t pin);
-   * int GPIO_read_output_pin(const GPIO_pin_t pin);
+  > Functions for GPIO:
+    * void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
+    * void GPIO_write_pin(const GPIO_pin_t pin, const int val);
+    * void GPIO_toggle_pin(const GPIO_pin_t pin);
+    * int GPIO_read_pin(const GPIO_pin_t pin);
+    * int GPIO_read_output_pin(const GPIO_pin_t pin);
   
-* PWM:  (Not yet implemented)
+* **PWM**  (Not yet implemented)
   
-* Serial:
+* **Serial**
   * SERIAL_RX_BUFFER_SIZE    The number of bytes to use for the receive buffer.
   * SERIAL_TX_BUFFER_SIZE    The number of bytes for the transmit buffer.
 
-* SPI:       (Not yet implemented)
+* **SPI**       (Not yet implemented)
 
-* SoftSPI:   
+* **SoftSPI**   
   > SoftSPI is a software implemented SPI interface using any available GPIO 
   > pins.  You can have any reasonable number of interfaces.  Each operates 
   > in any of the standard four SPI modes, with either LSB first or MSB first, 
@@ -117,27 +117,27 @@ Configure the following items:
   > interface.
 
   > The CLK, MOSI, and MISO pins are set as:
-  * #define SOFTSPI_CLK         GPIO_PIN_B5
-  * #define SOFTSPI_MOSI        GPIO_PIN_B3
-  * #define SOFTSPI_MISO        GPIO_PIN_NONE
+    * #define SOFTSPI_CLK         GPIO_PIN_B5
+    * #define SOFTSPI_MOSI        GPIO_PIN_B3
+    * #define SOFTSPI_MISO        GPIO_PIN_NONE
 
   > softSPI modes:
-  * SPI_MODE_0_MSB_FIRST              =  0, // idle low,  sample on leading
-  * SPI_MODE_0_LSB_FIRST              =  1, // idle low,  sample on leading
-  * SPI_MODE_1_MSB_FIRST              =  2, // idle low,  sample on trailing
-  * SPI_MODE_1_LSB_FIRST              =  3, // idle low,  sample on trailing
-  * SPI_MODE_2_MSB_FIRST              =  4, // idle high, sample on leading
-  * SPI_MODE_2_LSB_FIRST              =  5, // idle high, sample on leading
-  * SPI_MODE_3_MSB_FIRST              =  6, // idle high, sample on trailing
-  * SPI_MODE_3_LSB_FIRST              =  7, // idle high, sample on trailing
-  * SPI_MODE_0_MSB_FIRST_SLOW         =  8, // idle low,  sample on leading
-  * SPI_MODE_0_LSB_FIRST_SLOW         =  9, // idle low,  sample on leading
-  * SPI_MODE_1_MSB_FIRST_SLOW         = 10, // idle low,  sample on trailing
-  * SPI_MODE_1_LSB_FIRST_SLOW         = 11, // idle low,  sample on trailing
-  * SPI_MODE_2_MSB_FIRST_SLOW         = 12, // idle high, sample on leading
-  * SPI_MODE_2_LSB_FIRST_SLOW         = 13, // idle high, sample on leading
-  * SPI_MODE_3_MSB_FIRST_SLOW         = 14, // idle high, sample on trailing
-  * SPI_MODE_3_LSB_FIRST_SLOW         = 15, // idle high, sample on trailing
+    * SPI_MODE_0_MSB_FIRST              =  0, // idle low,  sample on leading
+    * SPI_MODE_0_LSB_FIRST              =  1, // idle low,  sample on leading
+    * SPI_MODE_1_MSB_FIRST              =  2, // idle low,  sample on trailing
+    * SPI_MODE_1_LSB_FIRST              =  3, // idle low,  sample on trailing
+    * SPI_MODE_2_MSB_FIRST              =  4, // idle high, sample on leading
+    * SPI_MODE_2_LSB_FIRST              =  5, // idle high, sample on leading
+    * SPI_MODE_3_MSB_FIRST              =  6, // idle high, sample on trailing
+    * SPI_MODE_3_LSB_FIRST              =  7, // idle high, sample on trailing
+    * SPI_MODE_0_MSB_FIRST_SLOW         =  8, // idle low,  sample on leading
+    * SPI_MODE_0_LSB_FIRST_SLOW         =  9, // idle low,  sample on leading
+    * SPI_MODE_1_MSB_FIRST_SLOW         = 10, // idle low,  sample on trailing
+    * SPI_MODE_1_LSB_FIRST_SLOW         = 11, // idle low,  sample on trailing
+    * SPI_MODE_2_MSB_FIRST_SLOW         = 12, // idle high, sample on leading
+    * SPI_MODE_2_LSB_FIRST_SLOW         = 13, // idle high, sample on leading
+    * SPI_MODE_3_MSB_FIRST_SLOW         = 14, // idle high, sample on trailing
+    * SPI_MODE_3_LSB_FIRST_SLOW         = 15, // idle high, sample on trailing
 
   > The number of interfaces is set as:  
   > // bps       ss_pin            mode                bits  
@@ -148,34 +148,31 @@ Configure the following items:
 
 
   > The functions available for the softSPI interfaces:
+    * int SOFTSPI_init(GPIO_pin_t clk, GPIO_pin_t mosi, GPIO_pin_t miso);
+    * int SOFTSPI_init2(void);
+    * int SOFTSPI_set_interface(uint8_t idx, GPIO_pin_t ss, uint8_t bits, softspi_mode_t mode,  uint32_t bps);
+    * uint32_t SOFTSPI_write(uint8_t idx, uint32_t data);
 
-  * int SOFTSPI_init(GPIO_pin_t clk, GPIO_pin_t mosi, GPIO_pin_t miso);
-  * int SOFTSPI_init2(void);
-  * int SOFTSPI_set_interface(uint8_t idx, GPIO_pin_t ss, uint8_t bits, softspi_mode_t mode,  uint32_t bps);
-  * uint32_t SOFTSPI_write(uint8_t idx, uint32_t data);
 
-
-* Systick:
+* **Systick**
   >Systick offers a real-time clock, counting ticks and milliseconds.  It uses 
   > the main CPU clock divided by a selected prescaler.  The timer used is 
   > 8 bit timer 0, so it rolls over and interrupts every 256 cycles (after 
   > prescaling.)
   > Systick also provides for timed callbacks.  Each callback can run a 
   > single time or repetitively after a set number of ticks or milliseconds.
-   * SYSTICK_COUNT   Set to the number of callback timers desired.
-
-  
-typedef void ( *callback_t) (void);
+    * SYSTICK_COUNT   Set to the number of callback timers desired.
+    * typedef void ( *callback_t) (void);
 
   > Prescale_t
-  * CLK_NONE     = 0,
-  * CLK_DIV_1    = 1,
-  * CLK_DIV_8    = 2,
-  * CLK_DIV_64   = 3,
-  * CLK_DIV_256  = 4,
-  * CLK_DIV_1024 = 5,
-  * CLK_EXT_T0   = 6,
-  * CLK_EXT_T1   = 7
+    * CLK_NONE     = 0,  // Turn off clock
+    * CLK_DIV_1    = 1,  // F_CPU / 1
+    * CLK_DIV_8    = 2,  // F_CPU / 8
+    * CLK_DIV_64   = 3,  // F_CPU / 64
+    * CLK_DIV_256  = 4,  // F_CPU / 256
+    * CLK_DIV_1024 = 5,  // F_CPU / 1024
+    * CLK_EXT_T0   = 6,  // Clock from T0 input pin
+    * CLK_EXT_T1   = 7   // Clock from T1 input pin
 
   * #define SYSTICK_VERSION_MAJOR     0
   * #define SYSTICK_VERSION_MINOR     1
@@ -184,27 +181,27 @@ typedef void ( *callback_t) (void);
 
 
   > Functions for SYSTICK:
-  * void SYSTICK_init(const Prescale_t source);
-  * uint32_t SYSTICK_get_ticks(void);
-  * uint64_t SYSTICK_get_ticks_long(void);
-  * uint32_t SYSTICK_get_milliseconds(void);
-  * uint64_t SYSTICK_get_milliseconds_long(void);
-  * int SYSTICK_set_timer_ms(const int32_t ms, const uint8_t repeat, const callback_t cb);
-  * int SYSTICK_set_timer_ticks(const int32_t ticks, const uint8_t repeat, const callback_t cb);
-  * void SYSTICK_modify_timer_ms(const uint16_t index, const int32_t ms, const uint8_t repeat, callback_t cb);
-  * void SYSTICK_modify_timer_ticks(const uint16_t index, const int32_t ticks, const uint8_t repeat, const callback_t cb);
-  * uint32_t SYSTICK_get_ms_remaining(const uint16_t index);
-  * uint32_t SYSTICK_get_ticks_remaining(const uint16_t index);
-  * void SYSTICK_set_callback(const uint16_t index, const callback_t callback);
-  * float SYSTICK_get_irq_frequency(void);
-  * float SYSTICK_get_ms_per_tick(void);
-  * // void SYSTICK_handler(void) __attribute__((used,interrupt));
+    * void SYSTICK_init(const Prescale_t source);
+    * uint32_t SYSTICK_get_ticks(void);
+    * uint64_t SYSTICK_get_ticks_long(void);
+    * uint32_t SYSTICK_get_milliseconds(void);
+    * uint64_t SYSTICK_get_milliseconds_long(void);
+    * int SYSTICK_set_timer_ms(const int32_t ms, const uint8_t repeat, const callback_t cb);
+    * int SYSTICK_set_timer_ticks(const int32_t ticks, const uint8_t repeat, const callback_t cb);
+    * void SYSTICK_modify_timer_ms(const uint16_t index, const int32_t ms, const uint8_t repeat, callback_t cb);
+    * void SYSTICK_modify_timer_ticks(const uint16_t index, const int32_t ticks, const uint8_t repeat, const callback_t cb);
+    * uint32_t SYSTICK_get_ms_remaining(const uint16_t index);
+    * uint32_t SYSTICK_get_ticks_remaining(const uint16_t index);
+    * void SYSTICK_set_callback(const uint16_t index, const callback_t callback);
+    * float SYSTICK_get_irq_frequency(void);
+    * float SYSTICK_get_ms_per_tick(void);
+    * // void SYSTICK_handler(void) __attribute__((used,interrupt));
 
 
 ### device_config.h
 
 
-* button
+* **button**
   * BUTTON_PINS should list GPIO pin names for all buttons, comma separated.
   > #define BUTTON_PINS  GPIO_PIN_B4, GPIO_PIN_D2, GPIO_PIN_D7
   * BUTTON_BUFFER_SIZE defines size of a FIFO circular buffer of presses.
@@ -212,21 +209,20 @@ typedef void ( *callback_t) (void);
   * BUTTON_STABLE_COUNT Is how many reads in a row must button be stable.
   > #define BUTTON_STABLE_COUNT      10
 
-* dds_9833
+* **dds_9833**
   > The DDS 9833 uses softSPI, so configure the pins in the 
   > softSPI config section.  Set the chip clock rate here.
   * #define DDS_MASTER_CLOCK 25000000
   
   > DDS 9833 functions
-
-  * void DDS_9833_init(void)
-  > Initialize the interface
-  * void DDS_9833_write_frequency(uint32_t hz)
-  > Sets frequency in Hertz of current channel.
-  * void DDS_9833_write_phase(uint16_t deg)
-  > Sets phase of currently selected channel in degrees.
-  * void select_channel(uint8_t chan)
-  > Select channel 0 or 1.
+    * void DDS_9833_init(void)
+    > Initialize the interface
+    * void DDS_9833_write_frequency(uint32_t hz)
+    > Sets frequency in Hertz of current channel.
+    * void DDS_9833_write_phase(uint16_t deg)
+    > Sets phase of currently selected channel in degrees.
+    * void select_channel(uint8_t chan)
+    > Select channel 0 or 1.
 
 
 * encoder
