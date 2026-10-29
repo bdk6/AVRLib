@@ -22,7 +22,9 @@ extern "C"
 #include "gpio.h"
 #include "dds_9833.h"
 
-#define MASTER_CLOCK     25000000L     // Master reference clock of AD9833
+#ifndet DDS_MASTER_CLOCK
+#define DDS_MASTER_CLOCK     25000000L     // Master reference clock of AD9833
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 /// @fn DDS_9833_init
@@ -59,7 +61,7 @@ static void write_word(uint16_t wd)
 //////////////////////////////////////////////////////////////////////////////
 void DDS_9833_write_frequency(uint32_t hz)
 {
-  uint32_t n = (uint32_t)((uint64_t) hz * (1L << 28) / MASTER_CLOCK);
+  uint32_t n = (uint32_t)((uint64_t) hz * (1L << 28) / DDS_MASTER_CLOCK);
   write_word( (uint16_t) (n & 0x3fff) | 0x4000);
   write_word( (uint16_t) ((n >> 14) & 0x3fff) | 0x4000);
 }

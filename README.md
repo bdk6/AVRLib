@@ -204,25 +204,29 @@ typedef void ( *callback_t) (void);
 ### device_config.h
 
 
-//////////////////////////////////////////////////////////////////////////////
-// button
-// BUTTON_PINS should list GPIO pin names for all buttons, comma separated.
-// BUTTON_BUFFER_SIZE defines size of a FIFO circular buffer of presses.
-// BUTTON_STABLE_COUNT Is how many reads in a row must button be stable.
-//////////////////////////////////////////////////////////////////////////////
-#define BUTTON_PINS  GPIO_PIN_B4
-//   , GPIO_PIN_D2, GPIO_PIN_D7
-#define BUTTON_BUFFER_SIZE        4
-#define BUTTON_STABLE_COUNT      10
-// #define BUTTON_ACTIVE 1,0,0  // same # as pins
-// #define BUTTON_STABLE_COUNTS 10, 5, 4  // same # as pins
-
-
+* button
+  * BUTTON_PINS should list GPIO pin names for all buttons, comma separated.
+  > #define BUTTON_PINS  GPIO_PIN_B4, GPIO_PIN_D2, GPIO_PIN_D7
+  * BUTTON_BUFFER_SIZE defines size of a FIFO circular buffer of presses.
+  > #define BUTTON_BUFFER_SIZE        4
+  * BUTTON_STABLE_COUNT Is how many reads in a row must button be stable.
+  > #define BUTTON_STABLE_COUNT      10
 
 * dds_9833
-  > Not yet implemented
+  > The DDS 9833 uses softSPI, so configure the pins in the 
+  > softSPI config section.  Set the chip clock rate here.
+  * #define DDS_MASTER_CLOCK 25000000
+  
+  > DDS 9833 functions
 
-
+  * void DDS_9833_init(void)
+  > Initialize the interface
+  * void DDS_9833_write_frequency(uint32_t hz)
+  > Sets frequency in Hertz of current channel.
+  * void DDS_9833_write_phase(uint16_t deg)
+  > Sets phase of currently selected channel in degrees.
+  * void select_channel(uint8_t chan)
+  > Select channel 0 or 1.
 
 
 * encoder
@@ -271,13 +275,16 @@ typedef void ( *callback_t) (void);
 
 
 * LCD_44780
-  > Define the pins for LCD using GPIO pin names
-  > LCD is operated in 4 bit mode.
-  > RS Register Select pin.
-  > EN Enable pin.
-  > D7 - D4 Data bus pins.
-  > COLUMNS How many columns the LCD shows.
-  > ROWS how many rows are on the display.
+  >  Interfaces character LCD displays based on the Hitachi 
+  >  HD44780 chip or equivalent (most character LCDs.)
+
+  * Define the pins for LCD using GPIO pin names
+  * LCD is operated in 4 bit mode.
+  * RS Register Select pin.
+  * EN Enable pin.
+  * D7 - D4 Data bus pins.
+  * COLUMNS How many columns the LCD shows.
+  * ROWS how many rows are on the display.
 
   * #define LCD_44780_RS            GPIO_PIN_B1
   * #define LCD_44780_EN            GPIO_PIN_B0
@@ -288,5 +295,54 @@ typedef void ( *callback_t) (void);
   * #define LCD_44780_COLUMNS       16
   * #define LCD_44780_ROWS          2
 
+  * LCD_44780_param_t enums for below function calls.
+    * LCD_44780_DECREMENT         = 0,                 // Entry Mode
+    * LCD_44780_INCREMENT         = (1<<1),            // Entry Mode
+    * // What about 'S' bit?                           // Entry Mode
+    * LCD_44780_ON                = (1<<2),            // Display Enable
+    * LCD_44780_CURSOR            = (1<<1),            // Display Enable
+    * LCD_44780_BLINK             = (1<<0),            // Display Enable
+    * LCD_44780_SHIFT_RIGHT       = ((1<<3)|(1<<2)),   // Cursor Display Shift
+    * LCD_44780_SHIFT_LEFT        = (1<<3),            // Cursor Display Shift
+    * LCD_44780_8_BIT             = (1<<4),            // Function Set
+    * LCD_44780_TWO_LINES         = (1<<3),            // Function Set
+    * LCD_44780_5X10              = (1<<2),            // Function Set
+    * LCD_44780_param_t;
+
+
+  * LCD_44780 functions
+    * void LCD_44780_init(uint8_t num_cols, uint8_t num_rows, uint8_t rs, uint8_t en, uint8_t d7, uint8_t d6, uint8_t d5,  uint8_t d4);
+    > Initialize the display with the given parameters. Four bit mode, write only.
+    * void LCD_44780_init2(void);
+    > Initialize the display from the config file parameters. Four bit mode, write only.
+    * void LCD_44780_write_command( uint8_t cmd);
+    > Write a command byte to the display.
+    * void LCD_44780_write_data(uint8_t data);
+    > Write a data byte to the display.
+    * void LCD_44780_clear(void);
+    > Clear the display.
+    * void LCD_44780_home(void);
+    > Home the cursor.
+    * uint8_t LCD_44780_goto(int col, int row);
+    > Move display to given column and row.
+    * void LCD_44780_entry_mode(LCD_44780_param_t p);
+    > Sets cursor move direction and display shift on entry.  Enums are ORd together.
+    * void LCD_44780_display_enable(int p);
+    > Enables or disables display, cursor, and blink. Enums ORd together.
+    * void LCD_44780_cursor_display_shift(int p);
+    > Sets cursor or display shift mode. Cursor Display Shift enums ORd together.
+    * void LCD_44780_function_set(int p);
+    > Sets display length, lines, and font.  Function Set enums ORd together.
+    * void LCD_44780_set_CGRAM_address(int adr);
+    > Sets CGRAM address pointer to adr.
+    * void LCD_44780_set_DDRAM_address(int adr);
+    > Sets DDRAM address to adr.
+    * uint8_t LCD_44780_read_status(void);
+    > Reads busy flag and address (NOT VALID FOR CURRENT LIBRARY!)
+    > returns byte with current busy flag and address.
+    * uint8_t LCD_44780_read_data(void);
+    > Reads data from current adr. (NOT VALID FOR CURRENT LIBRARY!)
+    * int LCD_44780_write_string(char* str);
+    > Writes NULL terminated string to display. Returns number of chars written.
 
 
