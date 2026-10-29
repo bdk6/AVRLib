@@ -182,19 +182,32 @@ Configure the following items:
 
   > Functions for SYSTICK:
     * void SYSTICK_init(const Prescale_t source);
-    * uint32_t SYSTICK_get_ticks(void);
+    * uint32_t SYSTICK_get_ticks(void)
+      > Return number of timer ticks since startup, mod 2^32.
     * uint64_t SYSTICK_get_ticks_long(void);
+      > Return (long) number of ticks since startup.
     * uint32_t SYSTICK_get_milliseconds(void);
+      > Return number of milliseconds since startup, mod 2^32.
     * uint64_t SYSTICK_get_milliseconds_long(void);
+      > Return (long) number of milliseconds since startup.
     * int SYSTICK_set_timer_ms(const int32_t ms, const uint8_t repeat, const callback_t cb);
+      > Initialize one of the callback timers with time in ms, repeat value, callback fn. Return the timer index.
     * int SYSTICK_set_timer_ticks(const int32_t ticks, const uint8_t repeat, const callback_t cb);
+      > Initalize one of the callback timers with the time in ticks, repeat value, callback fn.  Return the timer index.
     * void SYSTICK_modify_timer_ms(const uint16_t index, const int32_t ms, const uint8_t repeat, callback_t cb);
+      > Modify an initialized timer by index with ms, repeat value, callback fn.
     * void SYSTICK_modify_timer_ticks(const uint16_t index, const int32_t ticks, const uint8_t repeat, const callback_t cb);
+      > Modify an initialized timer by index with ticks, repeat value, callback fn.
     * uint32_t SYSTICK_get_ms_remaining(const uint16_t index);
+      > Get the number of millisconds remaining before the timer given by index fires (again.)
     * uint32_t SYSTICK_get_ticks_remaining(const uint16_t index);
+      > Get the number of ticks remaining before the timer given by index fires (again.)
     * void SYSTICK_set_callback(const uint16_t index, const callback_t callback);
+      > Set only the callback of previously allocated timer given by index.
     * float SYSTICK_get_irq_frequency(void);
+      > Get the frequency of the timer ticks.
     * float SYSTICK_get_ms_per_tick(void);
+      > Get the number of ms for each tick.
     * // void SYSTICK_handler(void) __attribute__((used,interrupt));
 
 
@@ -203,29 +216,29 @@ Configure the following items:
 
 * **button**
   * BUTTON_PINS should list GPIO pin names for all buttons, comma separated.
-  > #define BUTTON_PINS  GPIO_PIN_B4, GPIO_PIN_D2, GPIO_PIN_D7
+    > #define BUTTON_PINS  GPIO_PIN_B4, GPIO_PIN_D2, GPIO_PIN_D7
   * BUTTON_BUFFER_SIZE defines size of a FIFO circular buffer of presses.
-  > #define BUTTON_BUFFER_SIZE        4
+    > #define BUTTON_BUFFER_SIZE        4
   * BUTTON_STABLE_COUNT Is how many reads in a row must button be stable.
-  > #define BUTTON_STABLE_COUNT      10
+    > #define BUTTON_STABLE_COUNT      10
 
 * **dds_9833**
   > The DDS 9833 uses softSPI, so configure the pins in the 
   > softSPI config section.  Set the chip clock rate here.
   * #define DDS_MASTER_CLOCK 25000000
   
-  > DDS 9833 functions
+  * DDS 9833 functions
     * void DDS_9833_init(void)
-    > Initialize the interface
+      > Initialize the interface
     * void DDS_9833_write_frequency(uint32_t hz)
-    > Sets frequency in Hertz of current channel.
+      > Sets frequency in Hertz of current channel.
     * void DDS_9833_write_phase(uint16_t deg)
-    > Sets phase of currently selected channel in degrees.
+      > Sets phase of currently selected channel in degrees.
     * void select_channel(uint8_t chan)
-    > Select channel 0 or 1.
+      > Select channel 0 or 1.
 
 
-* encoder
+* **encoder**
   > Quadrature rotary encoder(s).  Can have multiple encoders, two pins each.
   > The code will track a count based on rotation of the encoder. The count 
   > will increment for clockwise rotation and decrement for counter-clockwise 
@@ -256,7 +269,7 @@ Configure the following items:
 
 
 
-* keypad
+* **keypad**
   > Define the pins for rows and columns with a comma separated list
   > of pin names for each.
   > BUFFER_SIZE is the number of bytes for the FIFO buffer of key presses
@@ -270,17 +283,17 @@ Configure the following items:
   * #define KEYPAD_STABLE_COUNT       5
 
 
-* LCD_44780
+* **LCD_44780**
   >  Interfaces character LCD displays based on the Hitachi 
   >  HD44780 chip or equivalent (most character LCDs.)
 
   * Define the pins for LCD using GPIO pin names
-  * LCD is operated in 4 bit mode.
+  * LCD is operated in 4 bit mode, write only.
   * RS Register Select pin.
   * EN Enable pin.
   * D7 - D4 Data bus pins.
   * COLUMNS How many columns the LCD shows.
-  * ROWS how many rows are on the display.
+  * ROWS How many rows the LCD shows.
 
   * #define LCD_44780_RS            GPIO_PIN_B1
   * #define LCD_44780_EN            GPIO_PIN_B0
@@ -308,37 +321,37 @@ Configure the following items:
 
   * LCD_44780 functions
     * void LCD_44780_init(uint8_t num_cols, uint8_t num_rows, uint8_t rs, uint8_t en, uint8_t d7, uint8_t d6, uint8_t d5,  uint8_t d4);
-    > Initialize the display with the given parameters. Four bit mode, write only.
+      > Initialize the display with the given parameters. Four bit mode, write only.
     * void LCD_44780_init2(void);
-    > Initialize the display from the config file parameters. Four bit mode, write only.
+      > Initialize the display from the config file parameters. Four bit mode, write only.
     * void LCD_44780_write_command( uint8_t cmd);
-    > Write a command byte to the display.
+      > Write a command byte to the display.
     * void LCD_44780_write_data(uint8_t data);
-    > Write a data byte to the display.
+      > Write a data byte to the display.
     * void LCD_44780_clear(void);
-    > Clear the display.
+      > Clear the display.
     * void LCD_44780_home(void);
-    > Home the cursor.
+      > Home the cursor.
     * uint8_t LCD_44780_goto(int col, int row);
-    > Move display to given column and row.
+      > Move display to given column and row.
     * void LCD_44780_entry_mode(LCD_44780_param_t p);
-    > Sets cursor move direction and display shift on entry.  Enums are ORd together.
+      > Sets cursor move direction and display shift on entry.  Enums are ORd together.
     * void LCD_44780_display_enable(int p);
-    > Enables or disables display, cursor, and blink. Enums ORd together.
+      > Enables or disables display, cursor, and blink. Enums ORd together.
     * void LCD_44780_cursor_display_shift(int p);
-    > Sets cursor or display shift mode. Cursor Display Shift enums ORd together.
+      > Sets cursor or display shift mode. Cursor Display Shift enums ORd together.
     * void LCD_44780_function_set(int p);
-    > Sets display length, lines, and font.  Function Set enums ORd together.
+      > Sets display length, lines, and font.  Function Set enums ORd together.
     * void LCD_44780_set_CGRAM_address(int adr);
-    > Sets CGRAM address pointer to adr.
+      > Sets CGRAM address pointer to adr.
     * void LCD_44780_set_DDRAM_address(int adr);
-    > Sets DDRAM address to adr.
+      > Sets DDRAM address to adr.
     * uint8_t LCD_44780_read_status(void);
-    > Reads busy flag and address (NOT VALID FOR CURRENT LIBRARY!)
-    > returns byte with current busy flag and address.
+      > Reads busy flag and address (NOT VALID FOR CURRENT LIBRARY!)
+      > returns byte with current busy flag and address.
     * uint8_t LCD_44780_read_data(void);
-    > Reads data from current adr. (NOT VALID FOR CURRENT LIBRARY!)
+      > Reads data from current adr. (NOT VALID FOR CURRENT LIBRARY!)
     * int LCD_44780_write_string(char* str);
-    > Writes NULL terminated string to display. Returns number of chars written.
+      > Writes NULL terminated string to display. Returns number of chars written.
 
 
