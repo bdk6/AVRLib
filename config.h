@@ -1,8 +1,9 @@
 
+#include "gpio.h"
 
 
 
-#define F_CPU        16000000    // Set clock frequency in Hertz
+#define F_CPU        8000000    // Set clock frequency in Hertz
 // use date -u +%Y%m%d%H%M%S utc
 #define BUILD_DATE 20230611
 #define VERSION_MAJOR      0

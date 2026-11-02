@@ -58,7 +58,7 @@ void KEYPAD_init(void)
   for(int r = 0; r < KEYPAD_NUMBER_ROWS; r++)
   {
     GPIO_pin_mode(rows[r], GPIO_PIN_MODE_OUTPUT);
-    GPIO_write_pin(rows[r], 1);
+    GPIO_write(rows[r], 1);
   }
 
   // Initialize column pins as inputs with pullups
@@ -140,13 +140,13 @@ int KEYPAD_press_count(const uint8_t row, const uint8_t col);
 static void scan_callback(void)
 {
   // scan
-  for(uint8_t r = 0; r < KEYPAD_NUMBER_ROWS; r++) GPIO_write_pin(rows[r],1);
+  for(uint8_t r = 0; r < KEYPAD_NUMBER_ROWS; r++) GPIO_write(rows[r],1);
   for(uint8_t r = 0; r < KEYPAD_NUMBER_ROWS; r++)
   {
-    GPIO_write_pin(rows[r], 0);
+    GPIO_write(rows[r], 0);
     for(uint8_t c = 0; c < KEYPAD_NUMBER_COLS; c++)
     {
-      uint8_t val = GPIO_read_pin(cols[c]);
+      uint8_t val = GPIO_read(cols[c]);
       if(val == 0)
       {
         if(keys[r][c].pressed < 255)
@@ -176,7 +176,7 @@ static void scan_callback(void)
         keys[r][c].pressed = 0;
       }
     }
-    GPIO_write_pin(rows[r], 1);
+    GPIO_write(rows[r], 1);
   }
 }
         

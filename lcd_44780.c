@@ -43,12 +43,12 @@
 
 static void RS_set(int rs)
 {
-  GPIO_write_pin(LCD_44780_RS, rs);
+  GPIO_write(LCD_44780_RS, rs);
 }
 
 //static void E_set(int e) // pb5
 //{
-//  GPIO_write_pin(LCD_44780_EN, e);
+//  GPIO_write(LCD_44780_EN, e);
 //}
 
 
@@ -58,10 +58,10 @@ static void RS_set(int rs)
 
 static void write_nibble(uint8_t nib)
 {
-  GPIO_write_pin(LCD_44780_D7, nib & 0x08);
-  GPIO_write_pin(LCD_44780_D6, nib & 0x04);
-  GPIO_write_pin(LCD_44780_D5, nib & 0x02);
-  GPIO_write_pin(LCD_44780_D4, nib & 0x01);
+  GPIO_write(LCD_44780_D7, nib & 0x08);
+  GPIO_write(LCD_44780_D6, nib & 0x04);
+  GPIO_write(LCD_44780_D5, nib & 0x02);
+  GPIO_write(LCD_44780_D4, nib & 0x01);
   
   //nib &= 0x0f;  // Use only low four bits
   //uint8_t tmp = PORTB;
@@ -70,10 +70,10 @@ static void write_nibble(uint8_t nib)
   //PORTB = tmp;
   _delay_us(DELAY_1);//5);
   //E_set(1);
-  GPIO_write_pin(LCD_44780_EN, 1);
+  GPIO_write(LCD_44780_EN, 1);
   _delay_us( DELAY_1); //5);
   //E_set(0);
-  GPIO_write_pin(LCD_44780_EN, 0);
+  GPIO_write(LCD_44780_EN, 0);
   _delay_us( DELAY_1 ); //5);
   
 }
@@ -118,13 +118,13 @@ void LCD_44780_init(uint8_t num_cols, uint8_t num_rows ,
 //   //DDRB |= 0x0f;      // D4 to D7 as output
 
 //   //RS_set(0);  // Command mode
-//   GPIO_write_pin(RS, 0);
+//   GPIO_write(RS, 0);
 
 //   // not using RW
 //   //RW_set(0);  // Write mode
 //   
 //   //E_set(0);
-//   GPIO_write_pin(EN, 0);
+//   GPIO_write(EN, 0);
 //   
 //   _delay_ms( 50 );  // wait for it to finish initialization
 //   // Set 4 bit mode
@@ -160,11 +160,11 @@ void LCD_44780_init2(void)
    GPIO_pin_mode(LCD_44780_D4, GPIO_PIN_MODE_OUTPUT);
 
    //RS_set(0);  // Command mode
-   GPIO_write_pin(LCD_44780_RS, 0);
+   GPIO_write(LCD_44780_RS, 0);
 
    
    //E_set(0);
-   GPIO_write_pin(LCD_44780_EN, 0);
+   GPIO_write(LCD_44780_EN, 0);
    
    _delay_ms( 50 );  // wait for it to finish initialization
    // Set 4 bit mode

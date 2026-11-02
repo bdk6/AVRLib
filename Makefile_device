@@ -84,15 +84,15 @@ OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
 
 
-devicelib.a:	button.o keypad.o lcd_44780.o
-	avr-ar r devicelib.a button.o keypad.o lcd_44780.o
+devicelib.a:	button.o keypad.o lcd_44780.o lcd_t6963.o 
+	avr-ar r devicelib.a button.o keypad.o lcd_44780.o lcd_t6963.o 
 
 
 datefile.txt:
 	date -u +%Y%m%d%H%M%S >datefile.txt
 
-devicelib.elf:  devicelib_test.o buttonso keypad.o lcd44780.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib.elf devicelib_test.o button.o keypad.o lcd44780.o $(LDFLAGS) $(LIBS)
+devicelib.elf:  devicelib_test.o buttonso keypad.o lcd)44780.o lcd_t6963.o 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib.elf devicelib_test.o button.o keypad.o lcd_44780.o lcd_t6963.o $(LDFLAGS) $(LIBS)
 
 devicelib_test.o:  devicelib_test.c
 	$(CC) $(CFLAGS) -c devicelib_test.c
@@ -106,14 +106,17 @@ keypad.o:  keypad.c keypad.h device_config.h
 lcd_44780.o:	lcd_44780.c lcd_44780.h
 	$(CC) $(CFLAGS) -c lcd_44780.c
 
+lcd_t6963.o:	lcd_t6963.c lcd_t6963.h 
+	$(CC) $(CFLAGS) -c lcd_t6963.c 
+
 devicelib.hex: devicelib.elf
 	avr-objcopy -j .text -j .data -O ihex devicelib.elf devicelib.hex
 
 devicelib_test.hex: devicelib_test.elf
 	avr_objcopy -j .text -j .data -O ihex devicelib_test.efl devicelib_test.hex
 
-devicelib_test.elf: devicelib_test.o buttons.o keypad.o lcd44780.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib_test.elf devicelib_test.o buttons.o keypad.o lcd44780.o $(LDFLAGS) $(LIBS)
+devicelib_test.elf: devicelib_test.o buttons.o keypad.o lcd44780.o lcd_t6963.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib_test.elf devicelib_test.o buttons.o keypad.o lcd44780.o lcd_t6963.o  $(LDFLAGS) $(LIBS)
 
 #################################################################33
 

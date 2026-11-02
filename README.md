@@ -89,9 +89,9 @@ Configure the following items:
 
   * Functions for GPIO:
     * void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
-    * void GPIO_write_pin(const GPIO_pin_t pin, const int val);
-    * void GPIO_toggle_pin(const GPIO_pin_t pin);
-    * int GPIO_read_pin(const GPIO_pin_t pin);
+    * void GPIO_write(const GPIO_pin_t pin, const int val);
+    * void GPIO_toggle(const GPIO_pin_t pin);
+    * int GPIO_read(const GPIO_pin_t pin);
     * int GPIO_read_output_pin(const GPIO_pin_t pin);
   
 * **PWM**  (Not yet implemented)
@@ -304,7 +304,7 @@ Configure the following items:
 * **LCD_44780**
   * Depends on:
     * GPIO
-    
+
   >  Interfaces character LCD displays based on the Hitachi 
   >  HD44780 chip or equivalent (most character LCDs.)
 
@@ -374,5 +374,9 @@ Configure the following items:
       > Reads data from current adr. (NOT VALID FOR CURRENT LIBRARY!)
     * int LCD_44780_write_string(char* str);
       > Writes NULL terminated string to display. Returns number of chars written.
+
+* LCD_T6963
+
+*VFD_CU20025
 
 

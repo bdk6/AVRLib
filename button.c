@@ -100,7 +100,7 @@ static void callback(void)
 {
   for(int i = 0; i < NUMBER_BUTTONS; i++)
   {
-    if(GPIO_read_pin(button_pins[i]) == buttons[i].active)
+    if(GPIO_read(button_pins[i]) == buttons[i].active)
     {
       // inc count
       if(buttons[i].count < 255)

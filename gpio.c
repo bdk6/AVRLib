@@ -102,12 +102,12 @@ void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode)
     
 // Any non-zero value writes a 1
 /////////////////////////////////////////////////////////////////////////////
-/// @fn GPIO_write_pin
+/// @fn GPIO_write
 /// @brief Sets an output pin to the desired state.
 /// @param[in] pin Which pin to set.
 /// @param[in] val Desired state (any non-zero value is HIGH).
 /////////////////////////////////////////////////////////////////////////////
-void GPIO_write_pin(const GPIO_pin_t pin, const int val)
+void GPIO_write(const GPIO_pin_t pin, const int val)
 {
   uint8_t bit = (uint8_t)(pin & 0x07);
   uint8_t port = (uint8_t)(pin >> 3);
@@ -156,11 +156,11 @@ void GPIO_write_pin(const GPIO_pin_t pin, const int val)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-/// @fn GPIO_toggle_pin
+/// @fn GPIO_toggle
 /// @brief Toggles the state of an output pin.
 /// @param[in] pin Which pin to toggle.
 /////////////////////////////////////////////////////////////////////////////
-void GPIO_toggle_pin(const GPIO_pin_t pin)
+void GPIO_toggle(const GPIO_pin_t pin)
 {
   uint8_t bit = (uint8_t)(pin & 0x07);
   uint8_t port = (uint8_t)(pin >> 3);
@@ -186,12 +186,12 @@ void GPIO_toggle_pin(const GPIO_pin_t pin)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-/// @fn GPIO_read_pin
+/// @fn GPIO_read
 /// @brief Reads the state of an input pin.
 /// @param[in] pin Which pin to read.
 /// @return 0 if pin is LOW, 1 if pin is HIGH.
 /////////////////////////////////////////////////////////////////////////////
-int GPIO_read_pin(const GPIO_pin_t pin)
+int GPIO_read(const GPIO_pin_t pin)
 {
   int rtn = 0;
   uint8_t bit = (uint8_t)(pin & 0x07);
@@ -220,12 +220,12 @@ int GPIO_read_pin(const GPIO_pin_t pin)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-/// @fn GPIO_read_output_pin
+/// @fn GPIO_read_output
 /// @brief Reads the output state of a pin.
 /// @param[in] pin Which pin to read.
 /// @return 0 if output is set LOW, 1 if set HIGH.
 ////////////////////////////////////////////////////////////////////////////
-int GPIO_read_output_pin(const GPIO_pin_t pin)
+int GPIO_read_output(const GPIO_pin_t pin)
 {
   int rtn = 0;
   uint8_t bit = (uint8_t)(pin & 0x07);

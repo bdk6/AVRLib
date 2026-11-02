@@ -57,8 +57,8 @@ static const int8_t transitions[4][4] =
          if(idx < NUMBER_ENCODERS)
          {
                  uint8_t start = idx * 2;  // two pins per encoder
-                 uint8_t A = GPIO_read_pin(pins[start]);
-                 uint8_t B = GPIO_read_pin(pins[start + 1]);
+                 uint8_t A = GPIO_read(pins[start]);
+                 uint8_t B = GPIO_read(pins[start + 1]);
                  rtn = (A << 1) | B;
          }
          

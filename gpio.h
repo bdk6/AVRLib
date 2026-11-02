@@ -31,6 +31,7 @@ typedef enum GPIO_pin
     GPIO_PIN_C4         = 20,
     GPIO_PIN_C5         = 21,
     GPIO_PIN_C6         = 22,
+    GPIO_PIN_C7         = 23,
     
     GPIO_PIN_D0         = 24,
     GPIO_PIN_D1         = 25,
@@ -43,6 +44,9 @@ typedef enum GPIO_pin
     
     GPIO_PIN_NONE       = 255
   } GPIO_pin_t;
+
+#define PIN_HIGH 1
+#define PIN_LOW  0
 
 //////////////////////////////////////////////////////////////////////////////
 /// @enum GPIO_port_t
@@ -71,9 +75,9 @@ typedef enum GPIO_mode
     
 // void GPIO_init( int modeb, int pinb, int modec, int pinc, int moded, int pind);
 void GPIO_pin_mode(const GPIO_pin_t pin, const GPIO_mode_t mode);
-void GPIO_write_pin(const GPIO_pin_t pin, const int val);
-void GPIO_toggle_pin(const GPIO_pin_t pin);
-int GPIO_read_pin(const GPIO_pin_t pin);
-int GPIO_read_output_pin(const GPIO_pin_t pin);
+void GPIO_write(const GPIO_pin_t pin, const int val);
+void GPIO_toggle(const GPIO_pin_t pin);
+int GPIO_read(const GPIO_pin_t pin);
+int GPIO_read_output(const GPIO_pin_t pin);
 
 #endif

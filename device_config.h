@@ -76,7 +76,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // LCD_44780
 // Define the pins for LCD using GPIO pin names
-// LCD is operated in 4 bit mode.
+// LCD is operated in 4 bit, write only mode.
 // RS Register Select pin.
 // EN Enable pin.
 // D7 - D4 Data bus pins.
@@ -84,13 +84,58 @@
 // ROWS how many rows are on the display.
 /////////////////////////////////////////////////////////////////////////////
 
-#define LCD_44780_RS            GPIO_PIN_B1
-#define LCD_44780_EN            GPIO_PIN_B0
-#define LCD_44780_D7            GPIO_PIN_D7
-#define LCD_44780_D6            GPIO_PIN_D6
-#define LCD_44780_D5            GPIO_PIN_D5
-#define LCD_44780_D4            GPIO_PIN_D4
+#define LCD_44780_RS            GPIO_PIN_D7
+#define LCD_44780_EN            GPIO_PIN_D6
+#define LCD_44780_D7            GPIO_PIN_C3
+#define LCD_44780_D6            GPIO_PIN_C2
+#define LCD_44780_D5            GPIO_PIN_C1
+#define LCD_44780_D4            GPIO_PIN_C0
 #define LCD_44780_COLUMNS       16
-#define LCD_44780_ROWS          2
+#define LCD_44780_ROWS          1
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// LCD_T6963
+// Set the pin definitions to match your hardware
+/////////////////////////////////////////////////////////////////////////////
+
+
+// Pin definitions
+#define T6963_WR       GPIO_PIN_C2  // @rite
+#define T6963_RD       GPIO_PIN_C3  // Read
+#define T6963_CE       GPIO_PIN_C5  // Chip Enable
+#define T6963_CD       GPIO_PIN_C4  // Command  /Data
+#define T6963_RES      GPIO_PIN_B3  // Reset
+#define T6963_D0       GPIO_PIN_B4  // Data 0
+#define T6963_D1       GPIO_PIN_B5  // Data 1
+#define T6963_D2       GPIO_PIN_B6  // Data 2
+#define T6963_D3       GPIO_PIN_B7  // Data 3
+#define T6963_D4       GPIO_PIN_C0  // Data 4
+#define T6963_D5       GPIO_PIN_C1  // Data 5
+#define T6963_D6       GPIO_PIN_C6  // Data 6
+#define T6963_D7       GPIO_PIN_C7  // Data 7
+#define T6963_FONT     GPIO_PIN_D0  // Font Select LOW: 8x8, HIGH: 6x8
+
+
+/////////////////////////////////////////////////////////////////////////////
+// VFD_CU20025
+/////////////////////////////////////////////////////////////////////////////
+
+#define DATAPORT   PORTB
+
+#define RS_PIN   12
+#define E_PIN    13
+#define RW_PIN    5     // Read /Write
+
+#define RS_CMD    0
+#define RS_DATA   1
+
+#define CMD_CLEAR  0x01
+#define CMD_HOME   0x02
+#define dummy
 
 #endif 
+
+
