@@ -113,9 +113,9 @@ devicelib.hex: devicelib.elf
 	avr-objcopy -j .text -j .data -O ihex devicelib.elf devicelib.hex
 
 devicelib_test.hex: devicelib_test.elf
-	avr_objcopy -j .text -j .data -O ihex devicelib_test.efl devicelib_test.hex
+	avr_objcopy -j .text -j .data -O ihex devicelib_test.elf devicelib_test.hex
 
-devicelib_test.elf: devicelib_test.o buttons.o keypad.o lcd44780.o lcd_t6963.o
+devicelib_test.elf: devicelib_test.o buttons.o keypad.o lcd_44780.o lcd_t6963.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o devicelib_test.elf devicelib_test.o buttons.o keypad.o lcd44780.o lcd_t6963.o  $(LDFLAGS) $(LIBS)
 
 #################################################################33
