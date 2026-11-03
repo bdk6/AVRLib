@@ -1,0 +1,27 @@
+Futaba NA202SD08FA VFD
+
+
+VFD Pin		Signal		Notes
+-------		------		-----
+14		/Reset
+13		N/C             no connection
+12		GND
+11		+5 VDC
+10		D0		Pulled high internally.
+9		D1		Pulled high internally.
+8		D2		Pulled high internally.
+7		D3		Pulled high internally.
+6		D4		Pulled high internally.
+5		D5		Pulled high internally.
+4		D6		Pulled high internally.
+3		D7		Pulled high internally.
+2		Write Strobe	Pulled high internally.
+1		GND		Key pin - missing.
+
+TEST MODE: With /Reset grounded at power on all dots and segments will light
+
+
+Current draw (cursor is on at power on):
+	No characters displayed (cursor on) = 360 mA @ 5.0 VDC.
+	Display filled with @ characters = 390 mA @ 5.0 VDC.
+	With /Reset grounded at power on (all dots and segments lit) = 2.8 A @ 5.0 VDC.

@@ -1,0 +1,83 @@
+Printing of individual characters fill screen, starting at Line 00, Column 00.
+When Line 00, Column 19 is reached, characters continue at Line 01, Column 00.
+When Line 01, Column 19 is reached, no scrolling is performed. Additional
+characters are printed at Line 01, Column 19.
+
+This behavior can be changed by using codes 0x11 and 0x13 below.
+
+Codes marked with a + are the default at power on or display reset.
+
+Codes with no description don't appear to do anything.
+
+Note:	Sometimes, when the microcontroller is reset, the ellipsis (...) character
+	may show on the display momentarily. This is due to the fact that character
+	0xFF is an ellipsis. All of the data lines are pulled high on the display.
+	If a reset causes a toggle of the write strobe line...
+
+
+Hex	ASCII Code	Notes
+---	----------	-----
+00	NULL
+
+01	SOH
+
+02	STX
+
+03	ETX
+
+04	EOT n		Set display brightness level (DIM = 0x20, MED1 = 0x40, MED2 = 0x60, FULL = 0xFF).
+
+05	ENQ
+
+06	ACK
+
+07	BEL		Turn on blinking underline cursor.
+
+08	BS		Backspace and erase. Spans both lines.
+
+09	HT		Moves cursor one position right. Wraps to Line 01. Does not scroll at end of Line 01.
+
+0A	LF		If on Line 00: moves cursor down one line, same column.
+			If on Line 01: scrolls line up, moves cursor to column one.
+
+0B	VT		Turn on blinking characters. ----
+                                                         |---- Use in pairs.
+0C  +	FF		Turn off blinking characters. ---
+
+0D	CR		Moves cursor to start of line. Does not clear line.
+
+0E  +	SO		Turn off cursor.
+
+0F	SI		Turn on solid underline cursor.
+
+10	DLE
+
+11	DC1		Turns on wrap around. When Line 01, Col 19 is reached, continue at Line 00, Col 00.
+
+12  +	DC2		Turns off wrap around. When Line 01, Col 19 is reached, characters overprint that position.
+
+13	DC3		When Line 01, Col 19 is reached, scroll characters on Line 01 left. No effect on Line 00.
+
+14	DC4		Clear screen. Home cursor. Turns cursor on. INITIALIZE SCREEN.
+
+15	NAK		Clear screen. Home cursor. Leaves cursor off if off.
+
+16	SYN		Home cursor. Does not clear screen.
+
+17	ETB n		Turns underlines on/off (underline on = 0x44, blinking underline on = 0x46, underline off = 0x45).
+
+18	CAN
+
+19	EOM		Adds 80H to following character. Allows printing of high-bit characters if sending 7-bit data.
+
+1A	SUB	
+
+1B	ESC n		Moves cursor to position 0-39. Both lines contiguous.
+
+1C	FS
+
+1D	GS
+
+1E	RS		Multi-byte command. Possible user defined characters.
+
+1F	US
